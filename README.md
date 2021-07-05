@@ -1,6 +1,14 @@
 # Open Bus Pipelines
 
-An airflow server which manages the Open Bus project's processing pipelines
+An airflow server which manages the Open Bus project's processing pipelines.
+
+The actual processing is implemented in other repositories, this project only 
+defines how / when to run the different processing jobs and the dependencies 
+between the jobs.
+
+All the jobs run on the same server (the one where airflow scheduler runs)
+but use a different Python interpreter which supports updating the job's code 
+without restarting the Airflow server.
 
 ## Docker Compose environment
 
