@@ -1,0 +1,58 @@
+version: '3.4'
+
+services:
+
+  airflow-db:
+    image: postgres:13
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: "123456"
+    volumes:
+      - ".data/airflow-db:/var/lib/postgresql/data"
+
+  airflow-webserver:
+    restart: unless-stopped
+    build: .
+    environment:
+      OPEN_BUS_PIPELINES_AIRFLOW_INITIALIZE: "yes"
+      OPEN_BUS_PIPELINES_AIRFLOW_ROLE: "webserver"
+      OPEN_BUS_PIPELINES_AIRFLOW_ADMIN_PASSWORD: "123456"
+    ports:
+      - "8080:8080"
+    volumes:
+      - ".data/airflow-home:/var/airflow"
+      - ".:/srv"
+    depends_on:
+      - airflow-db
+
+  airflow-scheduler:
+    restart: unless-stopped
+    build: .
+    environment:
+      OPEN_BUS_PIPELINES_DOWNLOAD_SIRI_SNAPSHOTS: "yes"
+      OPEN_BUS_PIPELINES_AIRFLOW_ROLE: "scheduler"
+      OPEN_BUS_SIRI_STORAGE_ROOTPATH: "/var/siri-storage"
+      REMOTE_URL_HTTPAUTH: "${REMOTE_URL_HTTPAUTH}"
+      SQLALCHEMY_URL: "postgresql://postgres:123456@stride-db"
+      DEBUG: "yes"
+    volumes:
+      - ".data/airflow-home:/var/airflow"
+      - ".data/siri:/var/siri-storage"
+      - ".:/srv"
+    depends_on:
+      - airflow-webserver
+      - stride-db
+
+  stride-db:
+    image: postgres:13
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: "123456"
+    volumes:
+      - ".data/stride-db:/var/lib/postgresql/data"
+
+  stride-db-init:
+    image: docker.pkg.github.com/hasadna/open-bus-stride-db/open-bus-stride-db:latest
+    restart: "no"
+    environment:
+      SQLALCHEMY_URL: "postgresql://postgres:123456@stride-db"

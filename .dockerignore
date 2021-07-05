@@ -1,0 +1,13 @@
+.airflow.env
+.idea
+venv
+.airflow
+**/__pycache__
+.data
+*.egg-info
+Dockerfile
+docker-compose.yaml
+.gitignore
+.dockerignore
+*.md
+.env

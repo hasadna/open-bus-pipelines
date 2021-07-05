@@ -1,0 +1,8 @@
+.airflow.env
+.idea
+venv
+.airflow
+__pycache__
+.data
+*.egg-info
+.env
