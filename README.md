@@ -14,7 +14,7 @@ without restarting the Airflow server.
 
 This is the easiest option to run the Airflow server for local development / testing
 
-Create a `.env` file with the secret values:
+Create a `.env` file with the secret values (ask a team member for the username:password):
 
 ```
 REMOTE_URL_HTTPAUTH=username:password
@@ -31,6 +31,8 @@ Start the docker compose environment:
 ```
 docker-compose up -d --build
 ```
+
+Login to the Airflow server at http://localhost:8080 with username/password `admin`/`123456`
 
 ## Local development
 
