@@ -9,9 +9,7 @@ from open_bus_pipelines.config import STRIDE_VENV, OPEN_BUS_PIPELINES_PIP_INSTAL
 def get_pip_install_deps():
     if not OPEN_BUS_PIPELINES_PIP_INSTALL_DEPS:
         return ''
-    return '{}/bin/pip install -qqr {} && '.format(
-        STRIDE_VENV,
-        os.path.join(OPEN_BUS_PIPELINES_ROOTDIR, 'requirements-siri-etl.txt'))
+    return '{}/bin/pip install -qqr https://raw.githubusercontent.com/hasadna/open-bus-pipelines/main/requirements-siri-etl.txt && '.format(STRIDE_VENV)
 
 
 def get_print_dag_run():
