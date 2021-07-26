@@ -43,11 +43,17 @@ Prerequisites:
 * System dependencies: https://airflow.apache.org/docs/apache-airflow/stable/installation.html#system-dependencies
 * Python 3.8
 
-Create and install airflow virtualenv and dependencies
+Create airflow virtualenv
 
 ```
-python3.8 -m venv venv/airflow &&\
+python3.8 -m venv venv/airflow
+```
+
+Install airflow and dependencies
+
+```
 . venv/airflow/bin/activate &&\
+pip install --upgrade pip &&\
 bin/pip_install_airflow.sh &&\
 pip install -e .
 ```
@@ -62,7 +68,14 @@ Follow the [open-bus-siri-etl README](https://github.com/hasadna/open-bus-siri-e
 You can try the following one-liner if you already have all the required dependencies and repositories:
 
 ```
-( . venv/stride/bin/activate && cd ../open-bus-siri-etl && pip install -r requirements-dev.txt )
+( . venv/stride/bin/activate && pip install --upgrade pip && cd ../open-bus-siri-etl && pip install -r requirements-dev.txt )
+```
+
+Install open-bus-stride-etl, assuming it's in a sibling directory you can use the following command:
+
+```
+venv/stride/bin/pip install -r ../open-bus-stride-etl/requirements.txt &&\
+venv/stride/bin/pip install -e ../open-bus-stride-etl
 ```
 
 Create a file at `.airflow.env` with the following contents:
@@ -73,6 +86,7 @@ export AIRFLOW_HOME=$(pwd)/.airflow
 export AIRFLOW__CORE__DAGS_FOLDER=$(pwd)/dags
 export AIRFLOW__CORE__LOAD_EXAMPLES=False
 export AIRFLOW__CORE__LOAD_DEFAULT_CONNECTIONS=False
+export AIRFLOW__CORE__DAG_DISCOVERY_SAFE_MODE=False
 
 export OPEN_BUS_PIPELINES_DOWNLOAD_SIRI_SNAPSHOTS=yes
 export OPEN_BUS_PIPELINES_PIP_INSTALL_DEPS=no

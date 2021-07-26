@@ -5,9 +5,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends freetds-bin \
         locales lsb-release sasl2-bin sqlite3 unixodbc brotli
 WORKDIR /srv
 COPY bin/pip_install_airflow.sh bin/pip_install_airflow.sh
-RUN pip install --upgrade pip && bin/pip_install_airflow.sh && rm -rf bin
+COPY requirements.txt ./
+RUN pip install --upgrade pip && bin/pip_install_airflow.sh
 COPY requirements-siri-etl.txt ./
-RUN python3.8 -m venv /usr/local/lib/stride && /usr/local/lib/stride/bin/pip install -r requirements-siri-etl.txt
+COPY requirements-stride-etl.txt ./
+RUN python3.8 -m venv /usr/local/lib/stride &&\
+    /usr/local/lib/stride/bin/pip install --upgrade pip &&\
+    /usr/local/lib/stride/bin/pip install -r requirements-siri-etl.txt &&\
+    /usr/local/lib/stride/bin/pip install -r requirements-stride-etl.txt
 COPY dags/ dags/
 COPY open_bus_pipelines/ open_bus_pipelines/
 COPY setup.py ./
@@ -21,6 +26,7 @@ ENV AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql://postgres:123456@airflow-db
 ENV AIRFLOW__CORE__EXECUTOR=LocalExecutor
 ENV AIRFLOW__CORE__PARALLELISM=4
 ENV AIRFLOW__CORE__DAG_CONCURRENCY=1
+ENV AIRFLOW__CORE__DAG_DISCOVERY_SAFE_MODE=False
 ENV AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION=False
 ENV AIRFLOW__CORE__MAX_ACTIVE_RUNS_PER_DAG=1
 ENV STRIDE_VENV=/usr/local/lib/stride

@@ -3,9 +3,16 @@ from textwrap import dedent
 from airflow import DAG
 from airflow.utils.dates import days_ago
 
+from open_bus_pipelines.dags_generator import dags_generator
+from open_bus_pipelines.operators.api_bash_operator import ApiBashOperator
 from open_bus_pipelines.config import OPEN_BUS_PIPELINES_DOWNLOAD_SIRI_SNAPSHOTS
-from open_bus_pipelines.operators.cli_bash_operator import CliBashOperator
 
+
+for dag_id, dag in dags_generator('https://raw.githubusercontent.com/hasadna/open-bus-siri-etl/main/'):
+    globals()[dag_id] = dag
+
+
+# following dags require some additional logic so they are declared here rather then in the airflow.yaml
 
 dag_kwargs = dict(
     default_args={
@@ -14,37 +21,28 @@ dag_kwargs = dict(
     schedule_interval=None,
     start_date=days_ago(2),
 )
-
-
 if OPEN_BUS_PIPELINES_DOWNLOAD_SIRI_SNAPSHOTS:
     with DAG('siri-etl-download-latest-snapshots', **dag_kwargs) as download_latest_snapshots_dag:
-        CliBashOperator(
-            'open-bus-siri-etl download-latest-snapshots',
+        ApiBashOperator(
+            {
+                'type': 'api',
+                'module': 'open_bus_siri_etl.local_development_helpers',
+                'function': 'download_latest_snapshots'
+            },
             task_id='download_latest_snapshots'
         )
 else:
     with DAG('siri-etl-list-latest-snapshots', **dag_kwargs) as list_latest_snapshots_dag:
-        CliBashOperator(
-            'open-bus-siri-requester storage-list',
+        ApiBashOperator(
+            {
+                'type': 'cli',
+                'module': 'open_bus_siri_requester.cli',
+                'function': 'storage_list',
+                'kwargs': {
+                    'snapshot_id_prefix': {},
+                    'limit': {'default': 200}
+                }
+            },
             task_id='list_latest_snapshots'
         )
 
-
-with DAG(
-    'siri-etl-process-snapshot',
-    description=dedent("""
-        Process a single snapshot and load it to DB.
-        {
-            "snapshot_id": "2021/07/05/12/50",
-            "force_reload": false
-        }
-    """),
-    **dag_kwargs
-) as process_snapshot_dag:
-    CliBashOperator(
-        dedent("""open-bus-siri-etl process-snapshot \\
-            {{ "--force-reload" if dag_run.conf.get("force_reload") else "" }} \\
-            {{ dag_run.conf["snapshot_id"] }}
-        """),
-        task_id='process_snapshot'
-    )
