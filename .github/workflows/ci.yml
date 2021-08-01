@@ -25,6 +25,7 @@ jobs:
           docker push "${DOCKER_APP_IMAGE_NAME}:latest" &&\
           if ! git log -1 --pretty=format:"%s" | grep -- --no-deploy \
              && ! git log -1 --pretty=format:"%s" | grep '^automatic update of siri etl requirements$'
+             && ! git log -1 --pretty=format:"%s" | grep '^automatic update of stride etl requirements$'
           then
             cd `mktemp -d` &&\
             echo "${HASADNA_K8S_DEPLOY_KEY}" > hasadna_k8s_deploy_key &&\
