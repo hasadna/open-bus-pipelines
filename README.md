@@ -1,38 +1,165 @@
 # Open Bus Pipelines
 
-An airflow server which manages the Open Bus project's processing pipelines.
+Central repository for open bus pipelines, combines all the sub-repositories together.
+
+Includes an airflow server which manages the Open Bus project's processing pipelines
+as well as a Docker Compose environment for all the different open bus components.
 
 The actual processing is implemented in other repositories, this project only 
 defines how / when to run the different processing jobs and the dependencies 
-between the jobs.
-
-All the jobs run on the same server (the one where airflow scheduler runs)
+between the jobs. All the jobs run on the same server (the one where airflow scheduler runs)
 but use a different Python interpreter which supports updating the job's code 
 without restarting the Airflow server.
 
 ## Docker Compose environment
 
-This is the easiest option to run the Airflow server for local development / testing
+This is the easiest option to run all the pipeline components for local development / testing
 
-Create a `.env` file with the secret values (ask a team member for the username:password):
+### stride-db
 
-```
-REMOTE_URL_HTTPAUTH=username:password
-```
-
-Pull latest stride-db image:
+Pull the latest stride-db-init image (this container handles the migrations):
 
 ```
-docker pull docker.pkg.github.com/hasadna/open-bus-stride-db/open-bus-stride-db:latest
+docker-compose pull stride-db-init
 ```
 
-Start the docker compose environment:
+Start the database and run all migrations:
 
 ```
-docker-compose up -d --build
+docker-compose up -d stride-db-init
+```
+
+Additional functionality:
+* Check migrations log: `docker-compose logs stride-db-init`
+* Delete the DB data:
+    * Stop the environment: `docker-compose down`
+    * Delete the DB volume: `docker volume rm open-bus-pipelines_stride-db`
+* Develop stride-db migrations from a local clone of stride-db:
+    * Clone [hasadna/open-bus-stride-db](https://github.com/hasadna/open-bus-stride-db) to `../open-bus-stride-db` (relative to open-bus-pipelines repository)
+    * Start a bash shell in the stride-db-init container: `docker-compose -f docker-compose.yaml -f docker-compose-dev.yaml run --entrypoint bash stride-db-init`
+        * Create a migration: `alembic revision --autogenerate -m "describe the change here"`
+        * Run migrations: `alembic upgrade head`
+    * Build the db migrations Docker image: `docker-compose -f docker-compose.yaml -f docker-compose-dev.yaml build stride-db-init`
+
+### stride-etl
+
+Pull the latest stride-etl image:
+
+```
+docker-compose pull stride-etl
+```
+
+See help message for available stride-etl commands:
+
+```
+docker-compose run stride-etl
+```
+
+Run a command:
+
+```
+docker-compose run stride-etl stats collect
+```
+
+Additional functionality:
+* Develop stride-etl from a local clone:
+    * Clone [hasadna/open-bus-stride-db](https://github.com/hasadna/open-bus-stride-db) to ../open-bus-stride-db (relative to open-bus-pipelines repository) 
+    * Clone [hasadna/open-bus-stride-etl](https://github.com/hasadna/open-bus-stride-etl) to ../open-bus-stride-etl (relative to open-bus-pipelines repository)
+    * Run a command: `docker-compose -f docker-compose.yaml -f docker-compose-dev.yaml run stride-etl stats collect`
+    * Build the Docker image: `docker-compose -f docker-compose.yaml -f docker-compose-dev.yaml build stride-etl`
+
+### siri-requester
+
+Set the following in `.env` file (see [hasadna/open-bus-siri-requester](https://github.com/hasadna/open-bus-siri-requester) for details):
+
+```
+OPEN_BUS_MOT_KEY=
+OPEN_BUS_SSH_TUNNEL_SERVER_IP=
+OPEN_BUS_S3_ENDPOINT_URL=
+OPEN_BUS_S3_ACCESS_KEY_ID=
+OPEN_BUS_S3_SECRET_ACCESS_KEY=
+OPEN_BUS_S3_BUCKET=
+```
+
+Save the ssh tunnel private key file in `.data/siri-requester-key/open-bus-ssh-tunnel-private-key-file`
+
+Pull latest siri-requester image:
+
+```
+docker-compose pull siri-requester
+```
+
+Start siri-requester daemon:
+
+```
+docker-compose up -d siri-requester
+```
+
+Additional functionality:
+* Check the logs: `docker-compose logs siri-requester`
+* Run siri-requester commands: `docker-compose run --entrypoint open-bus-siri-requester siri-requester --help`
+* Develop siri-requester from a local clone:
+    * Clone [hasadna/open-bus-siri-requester](https://github.com/hasadna/open-bus-siri-requester) to ../open-bus-siri-requester (relative to open-bus-pipelines repository) 
+    * Run the siri-requester daemon: `docker-compose -f docker-compose.yaml -f docker-compose-dev.yaml up -d siri-requester`
+    * Run siri-requester commands: `docker-compose -f docker-compose.yaml -f docker-compose-dev.yaml run --entrypoint open-bus-siri-requester siri-requester --help`
+    * Build the Docker image: `docker-compose -f docker-compose.yaml -f docker-compose-dev.yaml build siri-requester`
+
+### siri-etl-process-new-snapshots
+
+Set the following in`.env` file (see [hasadna/open-bus-siri-etl](https://github.com/hasadna/open-bus-siri-etl) for details):
+
+```
+REMOTE_URL_HTTPAUTH=
+```
+
+Pull latest siri-etl image:
+
+```
+docker-compose pull siri-etl-process-new-snapshots
+```
+
+Start the siri-etl process new snapshots daemon:
+
+```
+docker-compose up -d siri-etl-process-new-snapshots
+```
+
+Additional functionality:
+* Check the logs: `docker-compose logs siri-etl-process-new-snapshots`
+* Run siri-etl commands: `docker-compose run --entrypoint open-bus-siri-etl siri-etl-process-new-snapshots --help`
+* Develop siri-etl from a local clone:
+    * Clone [hasadna/open-bus-siri-etl](https://github.com/hasadna/open-bus-siri-etl) to ../open-bus-siri-etl (relative to open-bus-pipelines repository) 
+    * Run the siri-etl daemon: `docker-compose -f docker-compose.yaml -f docker-compose-dev.yaml up -d siri-etl-process-new-snapshots`
+    * Run siri-etl commands: `docker-compose -f docker-compose.yaml -f docker-compose-dev.yaml run --entrypoint open-bus-siri-etl siri-etl-process-new-snapshots --help`
+    * Build the Docker image: `docker-compose -f docker-compose.yaml -f docker-compose-dev.yaml build siri-etl-process-new-snapshots`
+
+### airflow
+
+Set the following in`.env` file (see [hasadna/open-bus-siri-etl](https://github.com/hasadna/open-bus-siri-etl) for details):
+
+```
+REMOTE_URL_HTTPAUTH=
+```
+
+Pull latest airflow image:
+
+```
+docker-compose pull airflow-scheduler
+```
+
+Start the Airflow servers:
+
+```
+docker-compose up -d airflow-scheduler
 ```
 
 Login to the Airflow server at http://localhost:8080 with username/password `admin`/`123456`
+
+Additional functionality:
+* Check the scheduler logs: `docker-compose logs airflow-scheduler`
+* Build the docker image: `docker-compose build airflow-scheduler`
+* Local development of the airflow server (`dags/` and `open_bus_pipelines/`) is already available
+* Local development of related components is not supported (you have to publish the changes to the other repositories for them to take effect)
 
 ## Local development
 

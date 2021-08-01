@@ -1,0 +1,26 @@
+version: '3.4'
+
+services:
+
+  stride-db-init:
+    build: ../open-bus-stride-db
+    volumes:
+      - "../open-bus-stride-db:/srv"
+
+  stride-etl:
+    build: ../open-bus-stride-etl
+    volumes:
+      - "../open-bus-stride-db:/srv/open-bus-stride-db"
+      - "../open-bus-stride-etl:/srv/open-bus-stride-etl"
+
+  siri-requester:
+    build: ../open-bus-siri-requester
+    volumes:
+      - ".data/siri:/var/siri-storage"
+      - "../open-bus-siri-requester:/srv"
+
+  siri-etl-process-new-snapshots:
+    build: ../open-bus-siri-etl
+    volumes:
+      - ".data/siri:/var/siri-storage"
+      - "../open-bus-siri-etl:/srv"

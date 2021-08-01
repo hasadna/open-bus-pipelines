@@ -24,7 +24,7 @@ jobs:
           docker tag app "${DOCKER_APP_IMAGE_NAME}:latest" &&\
           docker push "${DOCKER_APP_IMAGE_NAME}:latest" &&\
           if ! git log -1 --pretty=format:"%s" | grep -- --no-deploy \
-             && ! git log -1 --pretty=format:"%s" | grep '^automatic update of siri etl requirements$'
+             && ! git log -1 --pretty=format:"%s" | grep '^automatic update of siri etl requirements$' \
              && ! git log -1 --pretty=format:"%s" | grep '^automatic update of stride etl requirements$'
           then
             cd `mktemp -d` &&\

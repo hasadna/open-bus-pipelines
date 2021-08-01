@@ -2,15 +2,70 @@ version: '3.4'
 
 services:
 
+  stride-db-init:
+    image: docker.pkg.github.com/hasadna/open-bus-stride-db/open-bus-stride-db:latest
+    restart: "on-failure"
+    environment:
+      SQLALCHEMY_URL: "postgresql://postgres:123456@stride-db"
+    depends_on:
+      - stride-db
+
+  stride-db:
+    image: postgres:13
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: "123456"
+    volumes:
+      - "stride-db:/var/lib/postgresql/data"
+
+  stride-etl:
+    image: docker.pkg.github.com/hasadna/open-bus-stride-etl/open-bus-stride-etl:latest
+    restart: "no"
+    environment:
+      SQLALCHEMY_URL: "postgresql://postgres:123456@stride-db"
+    depends_on:
+      - stride-db
+
+  siri-requester:
+    image: docker.pkg.github.com/hasadna/open-bus-siri-requester/open-bus-siri-requester:latest
+    restart: unless-stopped
+    environment:
+      OPEN_BUS_SIRI_STORAGE_ROOTPATH: "/var/siri-storage"
+      OPEN_BUS_MOT_KEY: "${OPEN_BUS_MOT_KEY}"
+      OPEN_BUS_SSH_TUNNEL_PRIVATE_KEY_FILE: "/var/siri-requester-key/open-bus-ssh-tunnel-private-key-file"
+      OPEN_BUS_SSH_TUNNEL_SERVER_IP: "${OPEN_BUS_SSH_TUNNEL_SERVER_IP}"
+      OPEN_BUS_S3_ENDPOINT_URL: "${OPEN_BUS_S3_ENDPOINT_URL}"
+      OPEN_BUS_S3_ACCESS_KEY_ID: "${OPEN_BUS_S3_ACCESS_KEY_ID}"
+      OPEN_BUS_S3_SECRET_ACCESS_KEY: "${OPEN_BUS_S3_SECRET_ACCESS_KEY}"
+      OPEN_BUS_S3_BUCKET: "${OPEN_BUS_S3_BUCKET}"
+    volumes:
+      - "siri-storage:/var/siri-storage"
+      - ".data/siri-requester-key:/var/siri-requester-key"
+
+  siri-etl-process-new-snapshots:
+    image: docker.pkg.github.com/hasadna/open-bus-siri-etl/open-bus-siri-etl:latest
+    restart: unless-stopped
+    command: [start-process-new-snapshots-daemon]
+    environment:
+      OPEN_BUS_SIRI_STORAGE_ROOTPATH: "/var/siri-storage"
+      REMOTE_URL_HTTPAUTH: "${REMOTE_URL_HTTPAUTH}"
+      SQLALCHEMY_URL: "postgresql://postgres:123456@stride-db"
+      DEBUG: "yes"
+    volumes:
+      - "siri-storage:/var/siri-storage"
+    depends_on:
+      - stride-db
+
   airflow-db:
     image: postgres:13
     restart: unless-stopped
     environment:
       POSTGRES_PASSWORD: "123456"
     volumes:
-      - ".data/airflow-db:/var/lib/postgresql/data"
+      - "airflow-db:/var/lib/postgresql/data"
 
   airflow-webserver:
+    image: docker.pkg.github.com/hasadna/open-bus-pipelines/open-bus-pipelines:latest
     restart: unless-stopped
     build: .
     environment:
@@ -20,12 +75,12 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ".data/airflow-home:/var/airflow"
-      - ".:/srv"
+      - "airflow-home:/var/airflow"
     depends_on:
       - airflow-db
 
   airflow-scheduler:
+    image: docker.pkg.github.com/hasadna/open-bus-pipelines/open-bus-pipelines:latest
     restart: unless-stopped
     build: .
     environment:
@@ -36,23 +91,15 @@ services:
       SQLALCHEMY_URL: "postgresql://postgres:123456@stride-db"
       DEBUG: "yes"
     volumes:
-      - ".data/airflow-home:/var/airflow"
-      - ".data/siri:/var/siri-storage"
+      - "airflow-home:/var/airflow"
+      - "siri-storage:/var/siri-storage"
       - ".:/srv"
     depends_on:
       - airflow-webserver
       - stride-db
 
+volumes:
   stride-db:
-    image: postgres:13
-    restart: unless-stopped
-    environment:
-      POSTGRES_PASSWORD: "123456"
-    volumes:
-      - ".data/stride-db:/var/lib/postgresql/data"
-
-  stride-db-init:
-    image: docker.pkg.github.com/hasadna/open-bus-stride-db/open-bus-stride-db:latest
-    restart: "no"
-    environment:
-      SQLALCHEMY_URL: "postgresql://postgres:123456@stride-db"
+  siri-storage:
+  airflow-db:
+  airflow-home:
