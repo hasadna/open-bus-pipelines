@@ -103,6 +103,10 @@ Additional functionality:
     * Run the siri-requester daemon: `docker-compose -f docker-compose.yaml -f docker-compose-dev.yaml up -d siri-requester`
     * Run siri-requester commands: `docker-compose -f docker-compose.yaml -f docker-compose-dev.yaml run --entrypoint open-bus-siri-requester siri-requester --help`
     * Build the Docker image: `docker-compose -f docker-compose.yaml -f docker-compose-dev.yaml build siri-requester`
+    * Run unit tests:
+        * Start a bash shell: `docker-compose -f docker-compose.yaml -f docker-compose-dev.yaml run --entrypoint bash siri-requester`
+            * Install test requirements: `pip install -r tests/requirements.txt`
+            * Run tests: `pytest -svvx`
 
 ### siri-etl-process-new-snapshots
 
@@ -132,6 +136,11 @@ Additional functionality:
     * Run the siri-etl daemon: `docker-compose -f docker-compose.yaml -f docker-compose-dev.yaml up -d siri-etl-process-new-snapshots`
     * Run siri-etl commands: `docker-compose -f docker-compose.yaml -f docker-compose-dev.yaml run --entrypoint open-bus-siri-etl siri-etl-process-new-snapshots --help`
     * Build the Docker image: `docker-compose -f docker-compose.yaml -f docker-compose-dev.yaml build siri-etl-process-new-snapshots`
+    * Run unit tests:
+        * Start a fresh stride-db: `docker-compose down; docker volume rm open-bus-pipelines_stride-db; docker-compose up -d stride-db-init`
+        * Start a bash shell: `docker-compose -f docker-compose.yaml -f docker-compose-dev.yaml run --entrypoint bash siri-etl-process-new-snapshots`
+            * Install test requirements: `pip install -r tests/requirements.txt`
+            * Run tests: `pytest -svvx`
 
 ### airflow
 
