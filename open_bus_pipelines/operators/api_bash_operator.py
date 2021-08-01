@@ -13,7 +13,7 @@ class ApiBashOperator(CliBashOperator):
 
     def _get_cli_bash_operator_cmd(self, config):
         return ' '.join([
-            'python',
+            'python', '-u',
             os.path.join(OPEN_BUS_PIPELINES_ROOTDIR, 'open_bus_pipelines', 'operators', '_api_bash_operator_script.py'),
             shlex.quote(json.dumps(config)),
             '__airflow_dag_run_conf__'
