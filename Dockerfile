@@ -7,12 +7,8 @@ WORKDIR /srv
 COPY bin/pip_install_airflow.sh bin/pip_install_airflow.sh
 COPY requirements.txt ./
 RUN pip install --upgrade pip && bin/pip_install_airflow.sh
-COPY requirements-siri-etl.txt ./
-COPY requirements-stride-etl.txt ./
 RUN python3.8 -m venv /usr/local/lib/stride &&\
-    /usr/local/lib/stride/bin/pip install --upgrade pip &&\
-    /usr/local/lib/stride/bin/pip install -r requirements-siri-etl.txt &&\
-    /usr/local/lib/stride/bin/pip install -r requirements-stride-etl.txt
+    /usr/local/lib/stride/bin/pip install --upgrade pip
 COPY dags/ dags/
 COPY open_bus_pipelines/ open_bus_pipelines/
 COPY setup.py ./
