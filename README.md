@@ -1,15 +1,29 @@
 # Open Bus Pipelines
 
-Central repository for open bus pipelines, combines all the sub-repositories together.
+Central repository for open bus processing pipelines.
 
-Includes an airflow server which manages the Open Bus project's processing pipelines
-as well as a Docker Compose environment for all the different open bus components.
+## High-level architecture
 
-The actual processing is implemented in other repositories, this project only 
-defines how / when to run the different processing jobs and the dependencies 
-between the jobs. All the jobs run on the same server (the one where airflow scheduler runs)
-but use a different Python interpreter which supports updating the job's code 
-without restarting the Airflow server.
+* [stride-db](https://github.com/hasadna/open-bus-stride-db):
+  The database contains all the project's data.
+  [SQLAlchemy ORM](https://docs.sqlalchemy.org/en/14/orm/) is used to define the
+  database tables and run queries.
+  [Alembic](https://alembic.sqlalchemy.org/) is used to update the database
+  structure.
+* [stride-etl](https://github.com/hasadna/open-bus-stride-etl):
+  Data enrichment ETL / processing jobs. New processing jobs should be added here
+  to enrich the core data. Processing jobs defined here are triggered from the
+  Airflow server.
+* [siri-requester](https://github.com/hasadna/open-bus-siri-requester):
+  A daemon which continuously downloads SIRI snapshot data from the MOT servers.
+* [siri-etl](https://github.com/hasadna/open-bus-siri-etl):
+  A daemon which processes new SIRI snapshots downloaded by siri-requester and
+  updates their data in the stride-db.
+* Airflow (this repository): triggers all the project's processing pipelines.
+  Each repository which contains processing jobs has an airflow.yaml file which
+  defines the pipelines to run, their schedule and their arguments. All the jobs
+  run on the same airflow scheduler but use a different Python interpreter which
+  supports updating the job's code without restarting the Airflow server.
 
 ## Docker Compose environment
 
