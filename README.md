@@ -96,12 +96,6 @@ See help message for available gtfs-etl commands:
 docker-compose run gtfs-etl
 ```
 
-Run a command:
-
-```
-docker-compose run gtfs-etl --help
-```
-
 Additional functionality:
 * Develop gtfs-etl from a local clone:
     * Clone [hasadna/open-bus-stride-db](https://github.com/hasadna/open-bus-stride-db) to ../open-bus-stride-db (relative to open-bus-pipelines repository) 
