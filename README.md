@@ -14,6 +14,8 @@ Central repository for open bus processing pipelines.
   Data enrichment ETL / processing jobs. New processing jobs should be added here
   to enrich the core data. Processing jobs defined here are triggered from the
   Airflow server.
+* [gtfs-etl](https://github.com/hasadna/open-bus-gtfs-etl):
+  GTFS ETL / processing jobs - loads the GTFS data from MOT to the DB.
 * [siri-requester](https://github.com/hasadna/open-bus-siri-requester):
   A daemon which continuously downloads SIRI snapshot data from the MOT servers.
 * [siri-etl](https://github.com/hasadna/open-bus-siri-etl):
