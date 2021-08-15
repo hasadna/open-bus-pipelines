@@ -13,6 +13,12 @@ services:
       - "../open-bus-stride-db:/srv/open-bus-stride-db"
       - "../open-bus-stride-etl:/srv/open-bus-stride-etl"
 
+  gtfs-etl:
+    build: ../open-bus-gtfs-etl
+    volumes:
+      - "../open-bus-stride-db:/srv/open-bus-stride-db"
+      - "../open-bus-gtfs-etl:/srv/open-bus-gtfs-etl"
+
   siri-requester:
     build: ../open-bus-siri-requester
     volumes:

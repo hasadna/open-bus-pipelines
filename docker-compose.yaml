@@ -3,7 +3,7 @@ version: '3.4'
 services:
 
   stride-db-init:
-    image: docker.pkg.github.com/hasadna/open-bus-stride-db/open-bus-stride-db:latest
+    image: ghcr.io/hasadna/open-bus-stride-db/open-bus-stride-db:latest
     restart: "on-failure"
     environment:
       SQLALCHEMY_URL: "postgresql://postgres:123456@stride-db"
@@ -19,7 +19,15 @@ services:
       - "stride-db:/var/lib/postgresql/data"
 
   stride-etl:
-    image: docker.pkg.github.com/hasadna/open-bus-stride-etl/open-bus-stride-etl:latest
+    image: ghcr.io/hasadna/open-bus-stride-etl/open-bus-stride-etl:latest
+    restart: "no"
+    environment:
+      SQLALCHEMY_URL: "postgresql://postgres:123456@stride-db"
+    depends_on:
+      - stride-db
+
+  gtfs-etl:
+    image: ghcr.io/hasadna/open-bus-gtfs-etl/open-bus-gtfs-etl:latest
     restart: "no"
     environment:
       SQLALCHEMY_URL: "postgresql://postgres:123456@stride-db"
@@ -27,7 +35,7 @@ services:
       - stride-db
 
   siri-requester:
-    image: docker.pkg.github.com/hasadna/open-bus-siri-requester/open-bus-siri-requester:latest
+    image: ghcr.io/hasadna/open-bus-siri-requester/open-bus-siri-requester:latest
     restart: unless-stopped
     environment:
       OPEN_BUS_SIRI_STORAGE_ROOTPATH: "/var/siri-storage"
@@ -43,7 +51,7 @@ services:
       - ".data/siri-requester-key:/var/siri-requester-key"
 
   siri-etl-process-new-snapshots:
-    image: docker.pkg.github.com/hasadna/open-bus-siri-etl/open-bus-siri-etl:latest
+    image: ghcr.io/hasadna/open-bus-siri-etl/open-bus-siri-etl:latest
     restart: unless-stopped
     command: [start-process-new-snapshots-daemon]
     environment:
@@ -65,7 +73,7 @@ services:
       - "airflow-db:/var/lib/postgresql/data"
 
   airflow-webserver:
-    image: docker.pkg.github.com/hasadna/open-bus-pipelines/open-bus-pipelines:latest
+    image: ghcr.io/hasadna/open-bus-pipelines/open-bus-pipelines:latest
     restart: unless-stopped
     build: .
     environment:
@@ -80,7 +88,7 @@ services:
       - airflow-db
 
   airflow-scheduler:
-    image: docker.pkg.github.com/hasadna/open-bus-pipelines/open-bus-pipelines:latest
+    image: ghcr.io/hasadna/open-bus-pipelines/open-bus-pipelines:latest
     restart: unless-stopped
     build: .
     environment:

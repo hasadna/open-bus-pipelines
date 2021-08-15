@@ -82,6 +82,33 @@ Additional functionality:
     * Run a command: `docker-compose -f docker-compose.yaml -f docker-compose-dev.yaml run stride-etl stats collect`
     * Build the Docker image: `docker-compose -f docker-compose.yaml -f docker-compose-dev.yaml build stride-etl`
 
+### gtfs-etl
+
+Pull the latest gtfs-etl image:
+
+```
+docker-compose pull gtfs-etl
+```
+
+See help message for available gtfs-etl commands:
+
+```
+docker-compose run gtfs-etl
+```
+
+Run a command:
+
+```
+docker-compose run gtfs-etl --help
+```
+
+Additional functionality:
+* Develop gtfs-etl from a local clone:
+    * Clone [hasadna/open-bus-stride-db](https://github.com/hasadna/open-bus-stride-db) to ../open-bus-stride-db (relative to open-bus-pipelines repository) 
+    * Clone [hasadna/open-bus-gtfs-etl](https://github.com/hasadna/open-bus-gtfs-etl) to ../open-bus-gtfs-etl (relative to open-bus-pipelines repository)
+    * Run a command: `docker-compose -f docker-compose.yaml -f docker-compose-dev.yaml run gtfs-etl --help`
+    * Build the Docker image: `docker-compose -f docker-compose.yaml -f docker-compose-dev.yaml build gtfs-etl`
+
 ### siri-requester
 
 Set the following in `.env` file (see [hasadna/open-bus-siri-requester](https://github.com/hasadna/open-bus-siri-requester) for details):

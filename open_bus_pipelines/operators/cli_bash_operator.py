@@ -12,6 +12,7 @@ def get_pip_install_deps():
     pip_install_prefix = '{}/bin/pip install -qqr https://raw.githubusercontent.com/hasadna/open-bus-pipelines/main'.format(STRIDE_VENV)
     return '{pip_install_prefix}/requirements-siri-etl.txt && ' \
            '{pip_install_prefix}/requirements-stride-etl.txt && ' \
+           '{pip_install_prefix}/requirements-gtfs-etl.txt && ' \
            ''.format(pip_install_prefix=pip_install_prefix)
 
 
