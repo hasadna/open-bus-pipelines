@@ -1,1 +1,1 @@
-https://github.com/hasadna/open-bus-gtfs-etl/archive/3d4c28966af83253a132fa00b8826d069e433961.zip
+https://github.com/hasadna/open-bus-gtfs-etl/archive/8524a3057c75f3c0b02dfd7173a77e226c345a8a.zip
