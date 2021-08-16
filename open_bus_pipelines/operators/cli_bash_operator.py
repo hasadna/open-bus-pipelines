@@ -1,5 +1,6 @@
 import os
-import json
+import tempfile
+import requests
 
 from airflow.operators.bash import BashOperator
 
@@ -9,11 +10,16 @@ from open_bus_pipelines.config import STRIDE_VENV, OPEN_BUS_PIPELINES_PIP_INSTAL
 def get_pip_install_deps():
     if not OPEN_BUS_PIPELINES_PIP_INSTALL_DEPS:
         return ''
-    pip_install_prefix = '{}/bin/pip install -qqr https://raw.githubusercontent.com/hasadna/open-bus-pipelines/main'.format(STRIDE_VENV)
-    return '{pip_install_prefix}/requirements-siri-etl.txt && ' \
-           '{pip_install_prefix}/requirements-stride-etl.txt && ' \
-           '{pip_install_prefix}/requirements-gtfs-etl.txt && ' \
-           ''.format(pip_install_prefix=pip_install_prefix)
+    with tempfile.TemporaryDirectory() as tempdir:
+        tempfilename = os.path.join(tempdir, 'requirements.txt')
+        with open(tempfilename, 'w') as f:
+            for filename in ['requirements-siri-etl.txt', 'requirements-stride-etl.txt', 'requirements-gtfs-etl.txt']:
+                f.write('# {}'.format(filename))
+                f.write(requests.get('https://raw.githubusercontent.com/hasadna/open-bus-pipelines/main/{}'.format(filename)).text)
+                f.write("\n")
+        with open(tempfilename) as f:
+            print(f.read())
+        return '{}/bin/pip install -qqr {} && '.format(STRIDE_VENV, tempfilename)
 
 
 def get_print_dag_run():
