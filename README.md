@@ -21,6 +21,8 @@ Central repository for open bus processing pipelines.
 * [siri-etl](https://github.com/hasadna/open-bus-siri-etl):
   A daemon which processes new SIRI snapshots downloaded by siri-requester and
   updates their data in the stride-db.
+* [stride-api](https://github.com/hasadna/open-bus-stride-api):
+  REST API, available at https://open-bus-stride-api.hasadna.org.il/docs
 * Airflow (this repository): triggers all the project's processing pipelines.
   Each repository which contains processing jobs has an airflow.yaml file which
   defines the pipelines to run, their schedule and their arguments. All the jobs
@@ -178,6 +180,29 @@ Additional functionality:
         * Start a bash shell: `docker-compose -f docker-compose.yaml -f docker-compose-dev.yaml run --entrypoint bash siri-etl-process-new-snapshots`
             * Install test requirements: `pip install -r tests/requirements.txt`
             * Run tests: `pytest -svvx`
+
+### stride-api
+
+Pull latest stride-api image:
+
+```
+docker-compose pull stride-api
+```
+
+Start the stride-api server:
+
+```
+docker-compose up -d stride-api
+```
+
+Access at http://localhost:8000/docs
+
+Additional functionality:
+* Check the logs: `docker-compose logs stride-api`
+* Develop stride-api from a local clone:
+    * Clone [hasadna/open-bus-stride-api](https://github.com/hasadna/open-bus-stride-api) to ../open-bus-stride-api (relative to open-bus-pipelines repository) 
+    * Run the stride-api server: `docker-compose -f docker-compose.yaml -f docker-compose-dev.yaml up -d stride-api`
+    * Build the Docker image: `docker-compose -f docker-compose.yaml -f docker-compose-dev.yaml build stride-api`
 
 ### airflow
 

@@ -30,3 +30,8 @@ services:
     volumes:
       - ".data/siri:/var/siri-storage"
       - "../open-bus-siri-etl:/srv"
+
+  stride-api:
+    build: ../open-bus-stride-api
+    volumes:
+      - "../open-bus-stride-api:/srv"

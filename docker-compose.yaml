@@ -66,6 +66,16 @@ services:
     depends_on:
       - stride-db
 
+  stride-api:
+    image: ghcr.io/hasadna/open-bus-stride-api/open-bus-stride-api:latest
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    environment:
+      SQLALCHEMY_URL: "postgresql://postgres:123456@stride-db"
+    depends_on:
+      - stride-db
+
   airflow-db:
     image: postgres:13
     restart: unless-stopped
