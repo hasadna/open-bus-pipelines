@@ -1,6 +1,9 @@
 from airflow.operators.bash import BashOperator
 
-from open_bus_pipelines.config import STRIDE_VENV, OPEN_BUS_PIPELINES_PIP_INSTALL_DEPS, OPEN_BUS_PIPELINES_ROOTDIR
+from open_bus_pipelines.config import (
+    STRIDE_VENV, OPEN_BUS_PIPELINES_PIP_INSTALL_DEPS, OPEN_BUS_PIPELINES_ROOTDIR,
+    OPEN_BUS_PIPELINES_ALERT_EMAILS
+)
 
 
 def get_pip_install_deps():
@@ -23,4 +26,6 @@ class CliBashOperator(BashOperator):
             print_dag_run=get_print_dag_run(),
             pip_install_deps=get_pip_install_deps()
         )
+        if OPEN_BUS_PIPELINES_ALERT_EMAILS:
+            kwargs['email'] = OPEN_BUS_PIPELINES_ALERT_EMAILS
         super(CliBashOperator, self).__init__(**kwargs)
