@@ -33,8 +33,11 @@ services:
     restart: "no"
     environment:
       SQLALCHEMY_URL: "postgresql://postgres:123456@stride-db"
+      GTFS_ETL_ROOT_ARCHIVES_FOLDER: "/var/gtfs-storage"
     depends_on:
       - stride-db
+    volumes:
+      - "gtfs-storage:/var/gtfs-storage"
 
   siri-requester:
     image: ghcr.io/hasadna/open-bus-siri-requester/open-bus-siri-requester:latest
@@ -110,10 +113,12 @@ services:
       REMOTE_URL_HTTPAUTH: "${REMOTE_URL_HTTPAUTH}"
       SQLALCHEMY_URL: "postgresql://postgres:123456@stride-db"
       DEBUG: "yes"
+      GTFS_ETL_ROOT_ARCHIVES_FOLDER: "/var/gtfs-storage"
     volumes:
       - "airflow-home:/var/airflow"
       - "siri-storage:/var/siri-storage"
       - ".:/srv"
+      - "gtfs-storage:/var/gtfs-storage"
     depends_on:
       - airflow-webserver
       - stride-db
@@ -121,5 +126,6 @@ services:
 volumes:
   stride-db:
   siri-storage:
+  gtfs-storage:
   airflow-db:
   airflow-home:

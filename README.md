@@ -276,6 +276,13 @@ venv/stride/bin/pip install -r ../open-bus-stride-etl/requirements.txt &&\
 venv/stride/bin/pip install -e ../open-bus-stride-etl
 ```
 
+Install open-bus-gtfs-etl, assuming it's in a sibling directory you can use the following command:
+
+```
+venv/stride/bin/pip install -r ../open-bus-gtfs-etl/requirements.txt &&\
+venv/stride/bin/pip install -e ../open-bus-gtfs-etl
+```
+
 Create a file at `.airflow.env` with the following contents:
 
 ```
