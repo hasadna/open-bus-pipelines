@@ -55,6 +55,27 @@ services:
       - "siri-storage:/var/siri-storage"
       - ".data/siri-requester-key:/var/siri-requester-key"
 
+  siri-requester-health:
+    image: ghcr.io/hasadna/open-bus-siri-requester/open-bus-siri-requester:latest
+    restart: unless-stopped
+    entrypoint: [open-bus-siri-requester, health-daemon-start]
+    environment:
+      OPEN_BUS_SIRI_STORAGE_ROOTPATH: "/var/siri-storage"
+    volumes:
+      - "siri-storage:/var/siri-storage"
+
+  siri-requester-nginx:
+    image: ghcr.io/hasadna/open-bus-siri-requester/open-bus-siri-requester-nginx:latest
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    environment:
+      SIRI_REQUESTER_HEALTH_URL: http://siri-requester-health:8081
+    volumes:
+      - "siri-storage:/srv"
+    depends_on:
+      - siri-requester-health
+
   siri-etl-process-new-snapshots:
     image: ghcr.io/hasadna/open-bus-siri-etl/open-bus-siri-etl:latest
     restart: unless-stopped

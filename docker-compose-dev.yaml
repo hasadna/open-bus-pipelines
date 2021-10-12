@@ -25,6 +25,16 @@ services:
       - ".data/siri:/var/siri-storage"
       - "../open-bus-siri-requester:/srv"
 
+  siri-requester-health:
+    build: ../open-bus-siri-requester
+    volumes:
+      - ".data/siri:/var/siri-storage"
+
+  siri-requester-nginx:
+    build: ../open-bus-siri-requester/nginx
+    volumes:
+      - ".data/siri:/srv"
+
   siri-etl-process-new-snapshots:
     build: ../open-bus-siri-etl
     volumes:

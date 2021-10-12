@@ -122,10 +122,10 @@ OPEN_BUS_S3_BUCKET=
 
 Save the ssh tunnel private key file in `.data/siri-requester-key/open-bus-ssh-tunnel-private-key-file`
 
-Pull latest siri-requester image:
+Pull latest siri-requester images:
 
 ```
-docker-compose pull siri-requester
+docker-compose pull siri-requester siri-requester-nginx
 ```
 
 Start siri-requester daemon:
@@ -137,11 +137,13 @@ docker-compose up -d siri-requester
 Additional functionality:
 * Check the logs: `docker-compose logs siri-requester`
 * Run siri-requester commands: `docker-compose run --entrypoint open-bus-siri-requester siri-requester --help`
+* Run the siri-requester health-check daemon and nginx: `docker-compose up -d siri-requester-nginx`
 * Develop siri-requester from a local clone:
     * Clone [hasadna/open-bus-siri-requester](https://github.com/hasadna/open-bus-siri-requester) to ../open-bus-siri-requester (relative to open-bus-pipelines repository) 
     * Run the siri-requester daemon: `docker-compose -f docker-compose.yaml -f docker-compose-dev.yaml up -d siri-requester`
+    * Run siri-requester healthcheck and nginx: `docker-compose -f docker-compose.yaml -f docker-compose-dev.yaml up -d siri-requester-nginx`
     * Run siri-requester commands: `docker-compose -f docker-compose.yaml -f docker-compose-dev.yaml run --entrypoint open-bus-siri-requester siri-requester --help`
-    * Build the Docker image: `docker-compose -f docker-compose.yaml -f docker-compose-dev.yaml build siri-requester`
+    * Build the Docker images: `docker-compose -f docker-compose.yaml -f docker-compose-dev.yaml build siri-requester siri-requester-nginx`
     * Run unit tests:
         * Start a bash shell: `docker-compose -f docker-compose.yaml -f docker-compose-dev.yaml run --entrypoint bash siri-requester`
             * Install test requirements: `pip install -r tests/requirements.txt`
