@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
 
+# lock will be released when script exits
+exec 8>/var/lock/pip_install_deps
+echo waiting for lock
+if ! flock -w 300 -x 8; then
+  echo failed to get lock
+  exit 1
+fi
+echo lock acquired
+
 REPO_NAME=hasadna/open-bus-pipelines
 BRANCH_NAME="${OPENBUS_PIPELINES_BRANCH:-main}"
 USE_LATEST_TAG="${OPENBUS_PIPELINES_USE_LATEST_TAG:-no}"
