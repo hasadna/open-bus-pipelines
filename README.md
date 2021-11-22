@@ -35,17 +35,26 @@ This is the easiest option to run all the pipeline components for local developm
 
 ### stride-db
 
-Pull the latest stride-db-init image (this container handles the migrations):
+Pull the latest stride-db-init image (this container handles the migrations or restoring from backup):
 
 ```
 docker-compose pull stride-db-init
 ```
 
-Start the database and run all migrations:
+There are two options for initializing the DB:
 
+* Initialize an empty DB and run all migrations:
+  * `docker-compose up -d stride-db-init`
+* Restore the DB from the last production backup (will take a while):
+  * You will need the siri requester data username / password (REMOTE_URL_HTTPAUTH)
+  * Create a `.env` file in current directory with the following contents:
 ```
-docker-compose up -d stride-db-init
+DB_RESTORE_URL_HTTPAUTH=siri_requester_data_username:password
 ```
+  * (replace `siri_requester_data_username:password` with the relevant value)
+  * Make sure you have an empty DB by running: `docker-compose down -v`
+  * Restore the DB: `docker-compose up -d stride-db-init`
+  * Wait, it will take a while, you can track progress by running `docker-compose logs -f stride-db-init`
 
 Additional functionality:
 * Check migrations log: `docker-compose logs stride-db-init`

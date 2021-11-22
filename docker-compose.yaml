@@ -7,6 +7,11 @@ services:
     restart: "on-failure"
     environment:
       SQLALCHEMY_URL: "postgresql://postgres:123456@stride-db"
+      PGPASSWORD: "123456"
+      HOSTNAME: "stride-db"
+      USER: "postgres"
+      DB: "postgres"
+      DB_RESTORE_URL_HTTPAUTH: "${DB_RESTORE_URL_HTTPAUTH}"
     depends_on:
       - stride-db
 
