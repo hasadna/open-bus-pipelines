@@ -2,6 +2,8 @@
 
 Central repository for open bus processing pipelines.
 
+See [CONTRIBUTING.md](CONTRIBUTING.md) for how to contribute to open-bus pipelines / stride projects.
+
 ## High-level architecture
 
 * [stride-db](https://github.com/hasadna/open-bus-stride-db):

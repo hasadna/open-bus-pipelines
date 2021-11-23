@@ -11,3 +11,4 @@ docker-compose.yaml
 .dockerignore
 *.md
 .env
+*.png
