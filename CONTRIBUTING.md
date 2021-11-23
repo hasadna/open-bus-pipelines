@@ -1,4 +1,4 @@
-# Contributing to open-bus pipelines projects
+# Contributing to open-bus pipelines / stride projects
 
 This doc details how to contribute to the different open-bus pipelines / stride projects.
 
