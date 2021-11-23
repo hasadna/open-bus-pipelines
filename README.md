@@ -49,9 +49,9 @@ There are two options for initializing the DB:
   * `docker-compose up -d stride-db-init`
 * Restore the DB from the last production backup (will take a while):
   * Create a `.env` file in current directory with the following contents:
-```
-DB_RESTORE_FROM_URL=yes
-```
+    ```
+    DB_RESTORE_FROM_URL=yes
+    ```
   * Make sure you have an empty DB by running: `docker-compose down -v`
   * Restore the DB: `docker-compose up -d stride-db-init`
   * Wait, it will take a while, you can track progress by running `docker-compose logs -f stride-db-init`
