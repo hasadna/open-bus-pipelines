@@ -8,11 +8,11 @@ Before contributing, follow these steps for the repository you want to contribut
 
 * Fork the repository by accessing the relevant repository on GitHub and clicking the "Fork" button
 
-![contributing_fork.png](contributing_fork.png)
+<img src="contributing_fork.png" width="550px"/>
 
 * Access the forked repository and get the clone link
 
-![contributing_clone.png](contributing_clone.png)
+<img src="contributing_clone.png" width="400px"/>
 
 * Clone your forked repository locally using your favorite Git tool / your IDE.
   * Using PyCharm, from the menu click on "Git" -> "Clone", and paste the clone link
@@ -43,10 +43,10 @@ For both cases, follow these steps to open a PR:
 * In GitHub - access your forked repository, and you should see a notification for the branch you pushed to
 * click the button "Compare & Pull Request"
 
-![contributing_pull_request.png](contributing_pull_request.png)
+<img src="contributing_pull_request.png" width="500px"/>
  
 * Give a descriptive title to your PR - describing the change you did
 * Write a PR description detailing why you opened it / what changes are included in it and any additional relevant information.
 * Click on either "Create pull request" or "Create draft pull request"
 
-![contributing_create_pull_request.png](contributing_create_pull_request.png)
+<img src="contributing_create_pull_request.png" width="500px"/>
