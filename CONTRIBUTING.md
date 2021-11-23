@@ -37,8 +37,9 @@ If your work is not done yet, you can open a draft PR -
 this is useful to have other team-members look at your changes or to start preparing for the final PR.
 
 When your work is done you can open a final PR or set your draft PR to ready for review.
+Before opening the final PR, pull latest changes from the main repository / main branch to prevent conflicts.
 
-For both cases, follow these steps to open a PR:
+Follow these steps to open a PR:
 
 * In GitHub - access your forked repository, and you should see a notification for the branch you pushed to
 * click the button "Compare & Pull Request"
