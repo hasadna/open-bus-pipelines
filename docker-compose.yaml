@@ -11,7 +11,7 @@ services:
       HOSTNAME: "stride-db"
       USER: "postgres"
       DB: "postgres"
-      DB_RESTORE_URL_HTTPAUTH: "${DB_RESTORE_URL_HTTPAUTH}"
+      DB_RESTORE_FROM_URL: "${DB_RESTORE_FROM_URL}"
     depends_on:
       - stride-db
 
@@ -87,7 +87,6 @@ services:
     command: [start-process-new-snapshots-daemon]
     environment:
       OPEN_BUS_SIRI_STORAGE_ROOTPATH: "/var/siri-storage"
-      REMOTE_URL_HTTPAUTH: "${REMOTE_URL_HTTPAUTH}"
       SQLALCHEMY_URL: "postgresql://postgres:123456@stride-db"
       DEBUG: "yes"
     volumes:
@@ -136,7 +135,6 @@ services:
       OPEN_BUS_PIPELINES_DOWNLOAD_SIRI_SNAPSHOTS: "yes"
       OPEN_BUS_PIPELINES_AIRFLOW_ROLE: "scheduler"
       OPEN_BUS_SIRI_STORAGE_ROOTPATH: "/var/siri-storage"
-      REMOTE_URL_HTTPAUTH: "${REMOTE_URL_HTTPAUTH}"
       SQLALCHEMY_URL: "postgresql://postgres:123456@stride-db"
       DEBUG: "yes"
       GTFS_ETL_ROOT_ARCHIVES_FOLDER: "/var/gtfs-storage"

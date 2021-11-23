@@ -48,12 +48,10 @@ There are two options for initializing the DB:
 * Initialize an empty DB and run all migrations:
   * `docker-compose up -d stride-db-init`
 * Restore the DB from the last production backup (will take a while):
-  * You will need the siri requester data username / password (REMOTE_URL_HTTPAUTH)
   * Create a `.env` file in current directory with the following contents:
 ```
-DB_RESTORE_URL_HTTPAUTH=siri_requester_data_username:password
+DB_RESTORE_FROM_URL=yes
 ```
-  * (replace `siri_requester_data_username:password` with the relevant value)
   * Make sure you have an empty DB by running: `docker-compose down -v`
   * Restore the DB: `docker-compose up -d stride-db-init`
   * Wait, it will take a while, you can track progress by running `docker-compose logs -f stride-db-init`
@@ -162,12 +160,6 @@ Additional functionality:
 
 ### siri-etl-process-new-snapshots
 
-Set the following in`.env` file (see [hasadna/open-bus-siri-etl](https://github.com/hasadna/open-bus-siri-etl) for details):
-
-```
-REMOTE_URL_HTTPAUTH=
-```
-
 Pull latest siri-etl image:
 
 ```
@@ -218,12 +210,6 @@ Additional functionality:
     * Build the Docker image: `docker-compose -f docker-compose.yaml -f docker-compose-dev.yaml build stride-api`
 
 ### airflow
-
-Set the following in`.env` file (see [hasadna/open-bus-siri-etl](https://github.com/hasadna/open-bus-siri-etl) for details):
-
-```
-REMOTE_URL_HTTPAUTH=
-```
 
 Pull latest airflow image:
 
@@ -314,7 +300,6 @@ Add environment variables for SIRI ETL (See the [README](https://github.com/hasa
 
 ```
 export OPEN_BUS_SIRI_STORAGE_ROOTPATH=$(pwd)/.data/siri
-export REMOTE_URL_HTTPAUTH=username:password
 export SQLALCHEMY_URL=postgresql://postgres:123456@localhost
 export DEBUG=yes
 ```
