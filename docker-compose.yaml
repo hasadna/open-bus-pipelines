@@ -1,4 +1,4 @@
-version: '3.4'
+version: '2.4'
 
 services:
 
@@ -20,6 +20,8 @@ services:
     restart: unless-stopped
     ports:
       - "5432:5432"
+    mem_reservation: 2g
+    mem_limit: 8g
     environment:
       POSTGRES_PASSWORD: "123456"
     volumes:

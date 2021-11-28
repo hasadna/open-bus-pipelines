@@ -46,8 +46,17 @@ docker-compose pull stride-db-init
 There are two options for initializing the DB:
 
 * Initialize an empty DB and run all migrations:
-  * `docker-compose up -d stride-db-init`
-* Restore the DB from the last production backup (will take a while):
+  * (If you previously restored DB from URL, remove DB_RESTORE_FROM_URL from the .env file)
+  * Run the DB and run migrations: `docker-compose up -d stride-db-init`
+  * You will now have an empty DB, to get some data you should run the following commands:
+    * (refer to other sections of this doc for more info and options for each command)
+    * Pull images: `docker-compose pull siri-etl-process-new-snapshots stride-etl`
+    * Choose a snapshot to download from https://open-bus-siri-requester.hasadna.org.il/2021/
+    * Download and process the snapshot:
+      * `docker-compose run --entrypoint open-bus-siri-etl siri-etl-process-new-snapshots process-snapshot --download 2021/11/27/10/00`
+    * Run additional ETL processes, e.g.:
+      * `docker-compose run stride-etl siri add-ride-durations`
+* Restore the DB from the last production backup (will take a while and require a lot of RAM..):
   * Create a `.env` file in current directory with the following contents:
     ```
     DB_RESTORE_FROM_URL=yes
@@ -55,6 +64,13 @@ There are two options for initializing the DB:
   * Make sure you have an empty DB by running: `docker-compose down -v`
   * Restore the DB: `docker-compose up -d stride-db-init`
   * Wait, it will take a while, you can track progress by running `docker-compose logs -f stride-db-init`
+
+You can now connect to the DB locally using any PostgreSQL client on:
+* host: `localhost`
+* port: `5432`
+* username: `postgres`
+* password: `123456`
+* db: `postgres` 
 
 Additional functionality:
 * Check migrations log: `docker-compose logs stride-db-init`
