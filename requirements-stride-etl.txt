@@ -1,2 +1,2 @@
--r https://github.com/hasadna/open-bus-stride-etl/raw/d4de851d94bd865199134f9278bc5f0f5fbb1381/requirements.txt
-https://github.com/hasadna/open-bus-stride-etl/archive/d4de851d94bd865199134f9278bc5f0f5fbb1381.zip
+-r https://github.com/hasadna/open-bus-stride-etl/raw/ac5bdd86490e90ca9616356e2264114633969a60/requirements.txt
+https://github.com/hasadna/open-bus-stride-etl/archive/ac5bdd86490e90ca9616356e2264114633969a60.zip
