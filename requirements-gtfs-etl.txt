@@ -1,2 +1,2 @@
--r https://github.com/hasadna/open-bus-gtfs-etl/raw/069a17d7f5e6b1f3e567aa28fb4931f1b205c2e8/requirements.txt
-https://github.com/hasadna/open-bus-gtfs-etl/archive/069a17d7f5e6b1f3e567aa28fb4931f1b205c2e8.zip
+-r https://github.com/hasadna/open-bus-gtfs-etl/raw/f5dd518afd1a5edd591fea88924f30be42b63f29/requirements.txt
+https://github.com/hasadna/open-bus-gtfs-etl/archive/f5dd518afd1a5edd591fea88924f30be42b63f29.zip
