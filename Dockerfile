@@ -3,6 +3,9 @@ FROM python:3.8@sha256:ff2d0720243a476aae42e4594527661b3647c98cbf5c1735e2bb03113
 RUN apt-get update && apt-get install -y --no-install-recommends freetds-bin \
         ldap-utils libffi6 libsasl2-2 libsasl2-modules libssl1.1 \
         locales lsb-release sasl2-bin sqlite3 unixodbc brotli jq
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" &&\
+    unzip awscliv2.zip && rm awscliv2.zip &&\
+    ./aws/install && aws --version
 WORKDIR /srv
 COPY bin/ bin/
 COPY requirements.txt ./
