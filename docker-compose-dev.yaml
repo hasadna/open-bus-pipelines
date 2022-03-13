@@ -7,6 +7,36 @@ services:
     volumes:
       - "../open-bus-stride-db:/srv"
 
+  stride-db-backup:
+    build: ../open-bus-stride-db/backup
+    depends_on:
+      - stride-db
+    command:
+      - --cron
+      - "* * * * *"
+    environment:
+      PG_BACKUP_DB: postgres
+      PG_BACKUP_HOSTNAME: stride-db
+      PG_BACKUP_USER: postgres
+      PG_BACKUP_SCHEMA: public
+      PGPASSWORD: "123456"
+      PG_BACKUP_FILENAME: /var/siri-storage/stride_db.sql.gz
+    volumes:
+      - ".data/siri:/var/siri-storage"
+
+  stride-db-backup-monitor:
+    build: ../open-bus-stride-db/backup
+    ports:
+      - "8081:8081"
+    depends_on:
+      - stride-db-backup
+    command:
+      - --health-daemon
+    environment:
+      PG_BACKUP_FILENAME: /var/siri-storage/stride_db.sql.gz
+    volumes:
+      - ".data/siri:/var/siri-storage"
+
   stride-etl:
     build: ../open-bus-stride-etl
     volumes:
