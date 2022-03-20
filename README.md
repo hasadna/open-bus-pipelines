@@ -2,7 +2,8 @@
 
 Central repository for open bus processing pipelines.
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for how to contribute to open-bus pipelines / stride projects.
+* See [CONTRIBUTING.md](CONTRIBUTING.md) for how to contribute to open-bus pipelines / stride projects.
+* See [docs/](docs/) for additional documentation.
 
 ## High-level architecture
 
