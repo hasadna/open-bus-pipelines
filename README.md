@@ -2,6 +2,8 @@
 
 Central repository for open bus processing pipelines.
 
+* Please report issues and feature requests [here](https://github.com/hasadna/open-bus/issues/new)
+* To get updates about the system status and for general help join Hasadna's Slack #open-bus channel ([Hasadna Slack signup link](https://join.slack.com/t/hasadna/shared_invite/zt-167h764cg-J18ZcY1odoitq978IyMMig))
 * See [CONTRIBUTING.md](CONTRIBUTING.md) for how to contribute to open-bus pipelines / stride projects.
 * See [docs/](docs/) for additional documentation.
 
