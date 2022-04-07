@@ -1,6 +1,6 @@
 -r https://github.com/hasadna/open-bus-siri-requester/raw/08f55811f71209a91d752d6e9ab6066c598eb664/requirements.txt
--r https://github.com/hasadna/open-bus-stride-db/raw/2fcf21b99a0fab22a4ea8ec05ace3ef0cd1f4003/requirements.txt
--r https://github.com/hasadna/open-bus-siri-etl/raw/dc8bed75813db937fbd05c9c87106b9e19d309fc/requirements.txt
+-r https://github.com/hasadna/open-bus-stride-db/raw/28b9257ca35e474e6a42945781a93b11e7117d2f/requirements.txt
+-r https://github.com/hasadna/open-bus-siri-etl/raw/84ecd9e59f7483b9af5f5d03f09bc3212549fd29/requirements.txt
 https://github.com/hasadna/open-bus-siri-requester/archive/08f55811f71209a91d752d6e9ab6066c598eb664.zip
-https://github.com/hasadna/open-bus-stride-db/archive/2fcf21b99a0fab22a4ea8ec05ace3ef0cd1f4003.zip
-https://github.com/hasadna/open-bus-siri-etl/archive/dc8bed75813db937fbd05c9c87106b9e19d309fc.zip
+https://github.com/hasadna/open-bus-stride-db/archive/28b9257ca35e474e6a42945781a93b11e7117d2f.zip
+https://github.com/hasadna/open-bus-siri-etl/archive/84ecd9e59f7483b9af5f5d03f09bc3212549fd29.zip
