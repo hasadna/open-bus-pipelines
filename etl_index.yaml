@@ -1,0 +1,7 @@
+- name: gtfs
+  # path: ../open-bus-gtfs-etl/
+  url: https://raw.githubusercontent.com/hasadna/open-bus-gtfs-etl/main/
+- name: siri
+  url: https://raw.githubusercontent.com/hasadna/open-bus-siri-etl/main/
+- name: stride
+  url: https://raw.githubusercontent.com/hasadna/open-bus-stride-etl/main/

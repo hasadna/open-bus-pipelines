@@ -1,18 +1,9 @@
-from textwrap import dedent
-
 from airflow import DAG
 from airflow.utils.dates import days_ago
 
-from open_bus_pipelines.dags_generator import dags_generator
 from open_bus_pipelines.operators.api_bash_operator import ApiBashOperator
 from open_bus_pipelines.config import OPEN_BUS_PIPELINES_DOWNLOAD_SIRI_SNAPSHOTS
 
-
-for dag_id, dag in dags_generator('https://raw.githubusercontent.com/hasadna/open-bus-siri-etl/main/'):
-    globals()[dag_id] = dag
-
-
-# following dags require some additional logic so they are declared here rather then in the airflow.yaml
 
 dag_kwargs = dict(
     default_args={
