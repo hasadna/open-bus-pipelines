@@ -12,3 +12,4 @@ docker-compose.yaml
 *.md
 .env
 *.png
+docgen_output

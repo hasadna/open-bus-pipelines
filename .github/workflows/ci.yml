@@ -7,21 +7,29 @@ jobs:
   ci:
     runs-on: ubuntu-18.04
     steps:
-    - uses: actions/checkout@v2
     - env:
-        DOCKER_APP_IMAGE_NAME: "docker.pkg.github.com/hasadna/open-bus-pipelines/open-bus-pipelines"
+        DOCKER_APP_IMAGE_NAME: "ghcr.io/hasadna/open-bus-pipelines/open-bus-pipelines"
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         HASADNA_K8S_DEPLOY_KEY: ${{ secrets.HASADNA_K8S_DEPLOY_KEY }}
       run: |
-        echo "${GITHUB_TOKEN}" | docker login docker.pkg.github.com -u hasadna --password-stdin &&\
-        if docker pull "${DOCKER_APP_IMAGE_NAME}:latest"; then
-          CACHE_FROM_ARG="--cache-from ${DOCKER_APP_IMAGE_NAME}:latest"
-        else
-          CACHE_FROM_ARG=""
+        curl -s https://raw.githubusercontent.com/OriHoch/uumpa-ci-toolbox/65a0704332e63d51f63981dbb25cd83682dc4078/bin/github_actions_install.sh \
+          | bash -s 65a0704332e63d51f63981dbb25cd83682dc4078 OriHoch/uumpa-ci-toolbox &&\
+        uci github actions self-checkout --config-user-name "open-bus-pipelines-ci" &&\
+        uci github actions docker-login &&\
+        uci docker build-cache \
+          --cache-from "${DOCKER_APP_IMAGE_NAME}:latest" \
+          -- -t app . &&\
+        uci docker tag-push \
+          --source-tag-name app \
+          --push-tag-name "${DOCKER_APP_IMAGE_NAME}:${GITHUB_SHA}" &&\
+        mkdir -p docgen_output &&\
+        docker run -v "`pwd`:/srv" --entrypoint python app bin/etl_docgen.py docgen_output &&\
+        if ! diff docgen_output/STRIDE_ETL_PROCESSES.md ./STRIDE_ETL_PROCESSES.md; then
+          cp -f docgen_output/STRIDE_ETL_PROCESSES.md ./STRIDE_ETL_PROCESSES.md &&\
+          git add ./STRIDE_ETL_PROCESSES.md &&\
+          git commit -m "automatic update of the etl processes documentation" &&\
+          git push
         fi &&\
-        docker build $CACHE_FROM_ARG -t app . &&\
-        docker tag app "${DOCKER_APP_IMAGE_NAME}:${GITHUB_SHA}" &&\
-        docker push "${DOCKER_APP_IMAGE_NAME}:${GITHUB_SHA}" &&\
         if [ "${GITHUB_REF}" == "refs/heads/main" ]; then
           docker tag app "${DOCKER_APP_IMAGE_NAME}:latest" &&\
           docker push "${DOCKER_APP_IMAGE_NAME}:latest" &&\
