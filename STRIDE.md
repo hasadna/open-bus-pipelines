@@ -8,7 +8,10 @@ The goal of the Open Bus Stride project is to provide usable and accurate data a
 ## Data Model
 
 See the [Stride DB Data Model](https://github.com/hasadna/open-bus-stride-db/blob/main/DATA_MODEL.md) for detailed description of all the data schema and objects.
+
 See the available interfaces below for how to access this data.
+
+For more details and background, see [MOT Developer Information](https://www.gov.il/BlobFolder/generalpage/gtfs_general_transit_feed_specifications/he/GTFS%20-%20Developer%20Information.pdf) for description of the source fields as published by the Israel Ministry of Transportation.
 
 ## ETL Processes
 
