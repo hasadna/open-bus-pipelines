@@ -23,6 +23,7 @@ See the [Stride ETL Processes](https://github.com/hasadna/open-bus-pipelines/blo
 
 This is the main interface which provides a REST API over the data model. 
 See the [Stride API docs](https://open-bus-stride-api.hasadna.org.il/docs) for details.
+See the [Stride API Usage guide](https://github.com/hasadna/open-bus-stride-api/blob/main/USAGE_GUIDE.md) for general usage of the REST API.
 
 **Python Client**
 
