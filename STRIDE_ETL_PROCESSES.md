@@ -61,3 +61,9 @@ Triggered daily after [gtfs-etl](#gtfs-etl) loads all the current day GTFS data 
 It updates the following fields in DB: [gtfs_ride.first_gtfs_ride_stop_id](https://github.com/hasadna/open-bus-stride-db/blob/main/DATA_MODEL.md#gtfs_ridefirst_gtfs_ride_stop_id), [gtfs_ride.last_gtfs_ride_stop_id](https://github.com/hasadna/open-bus-stride-db/blob/main/DATA_MODEL.md#gtfs_ridelast_gtfs_ride_stop_id), 
 [gtfs_ride.start_time](https://github.com/hasadna/open-bus-stride-db/blob/main/DATA_MODEL.md#gtfs_ridestart_time), [gtfs_ride.end_time](https://github.com/hasadna/open-bus-stride-db/blob/main/DATA_MODEL.md#gtfs_rideend_time).
 
+## stride-etl-urbanaccess-update-areas-fake-gtfs
+
+Runs daily, updates fake gtfs data for urbanaccess areas.
+Makes sure there is daily fake gtfs data for each area for the last 30 days.
+Data is avilable for download via the artifacts API method.
+
