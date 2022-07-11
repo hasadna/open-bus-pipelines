@@ -10,18 +10,17 @@ A daemon which runs continuously and approximately every 60 seconds looks for ne
 It then loads all the data from the downloaded SIRI snapshots to the DB tables [siri_ride](https://github.com/hasadna/open-bus-stride-db/blob/main/DATA_MODEL.md#siri_ride), [siri_ride_stop](https://github.com/hasadna/open-bus-stride-db/blob/main/DATA_MODEL.md#siri_ride_stop), [siri_route](https://github.com/hasadna/open-bus-stride-db/blob/main/DATA_MODEL.md#siri_route), 
 [siri_stop](https://github.com/hasadna/open-bus-stride-db/blob/main/DATA_MODEL.md#siri_stop), [siri_vehicle_location](https://github.com/hasadna/open-bus-stride-db/blob/main/DATA_MODEL.md#siri_vehicle_location). It uses the [siri_snapshot](https://github.com/hasadna/open-bus-stride-db/blob/main/DATA_MODEL.md#siri_snapshot) table to track progress of each snapshot loading.
 
-## gtfs-etl
+## gtfs-etl-download-upload
 
-Daily scheduled job which runs on midnight and downloads the GTFS data from MOT of current day and updates it in the Stride DB.
-
-Loads the data to the DB tables: [gtfs_stop](https://github.com/hasadna/open-bus-stride-db/blob/main/DATA_MODEL.md#gtfs_stop), [gtfs_route](https://github.com/hasadna/open-bus-stride-db/blob/main/DATA_MODEL.md#gtfs_route), [gtfs_ride](https://github.com/hasadna/open-bus-stride-db/blob/main/DATA_MODEL.md#gtfs_ride), [gtfs_ride_stop](https://github.com/hasadna/open-bus-stride-db/blob/main/DATA_MODEL.md#gtfs_ride_stop), [gtfs_stop_mot_id](https://github.com/hasadna/open-bus-stride-db/blob/main/DATA_MODEL.md#gtfs_stop_mot_id).
-
-Source data is also publically available in the following format: 
+Runs hourly, downloads the daily GTFS data from MOT if not downloaded yet and uploads to S3
+Downloaded data is available in the following format:
 `https://openbus-stride-public.s3.eu-west-1.amazonaws.com/gtfs_archive/year/month/dat/filename`,
 for example: https://openbus-stride-public.s3.eu-west-1.amazonaws.com/gtfs_archive/2022/06/03/ClusterToLine.zip
 possible values for filename: `ClusterToLine.zip`, `Tariff.zip`, `TripIdToDate.zip`, `israel-public-transportation.zip`.
 
-When all loading to DB is done, it triggers the following job: [stride-etl-gtfs-update-ride-aggregations](#stride-etl-gtfs-update-ride-aggregations)
+## gtfs-etl-process
+
+Runs hourly, iterates over all dates for which we have data for and makes sure all of them were processed
 
 ## stride-etl-siri-add-ride-durations
 
@@ -56,7 +55,7 @@ The file is compressed using brotli.
 
 ## stride-etl-gtfs-update-ride-aggregations
 
-Triggered daily after [gtfs-etl](#gtfs-etl) loads all the current day GTFS data to DB.
+Triggered daily after [[gtfs-etl]] loads all the current day GTFS data to DB.
 
 It updates the following fields in DB: [gtfs_ride.first_gtfs_ride_stop_id](https://github.com/hasadna/open-bus-stride-db/blob/main/DATA_MODEL.md#gtfs_ridefirst_gtfs_ride_stop_id), [gtfs_ride.last_gtfs_ride_stop_id](https://github.com/hasadna/open-bus-stride-db/blob/main/DATA_MODEL.md#gtfs_ridelast_gtfs_ride_stop_id), 
 [gtfs_ride.start_time](https://github.com/hasadna/open-bus-stride-db/blob/main/DATA_MODEL.md#gtfs_ridestart_time), [gtfs_ride.end_time](https://github.com/hasadna/open-bus-stride-db/blob/main/DATA_MODEL.md#gtfs_rideend_time).
