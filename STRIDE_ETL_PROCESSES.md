@@ -55,7 +55,7 @@ The file is compressed using brotli.
 
 ## stride-etl-gtfs-update-ride-aggregations
 
-Triggered daily after [[gtfs-etl]] loads all the current day GTFS data to DB.
+Idempotent task, runs hourly and verifies that the data is up to date.
 
 It updates the following fields in DB: [gtfs_ride.first_gtfs_ride_stop_id](https://github.com/hasadna/open-bus-stride-db/blob/main/DATA_MODEL.md#gtfs_ridefirst_gtfs_ride_stop_id), [gtfs_ride.last_gtfs_ride_stop_id](https://github.com/hasadna/open-bus-stride-db/blob/main/DATA_MODEL.md#gtfs_ridelast_gtfs_ride_stop_id), 
 [gtfs_ride.start_time](https://github.com/hasadna/open-bus-stride-db/blob/main/DATA_MODEL.md#gtfs_ridestart_time), [gtfs_ride.end_time](https://github.com/hasadna/open-bus-stride-db/blob/main/DATA_MODEL.md#gtfs_rideend_time).
