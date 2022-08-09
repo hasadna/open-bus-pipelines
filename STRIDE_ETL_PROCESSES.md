@@ -22,6 +22,11 @@ possible values for filename: `ClusterToLine.zip`, `Tariff.zip`, `TripIdToDate.z
 
 Runs hourly, iterates over all dates for which we have data for and makes sure all of them were processed
 
+## siri-etl-update-pending-snapshots
+
+Check all raw snapshot files in both local and remote (S3) storage,
+snapshots which don't exist in DB siri_snapshots table are added with status pending.
+
 ## stride-etl-siri-add-ride-durations
 
 Runs hourly, finds the first and last vehicle location of each ride and 
