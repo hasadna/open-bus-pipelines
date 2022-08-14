@@ -22,10 +22,24 @@ possible values for filename: `ClusterToLine.zip`, `Tariff.zip`, `TripIdToDate.z
 
 Runs hourly, iterates over all dates for which we have data for and makes sure all of them were processed
 
+## siri-etl-validate-snapshots
+
+Runs manually, compare snapshots in range between the data in DB and the raw snapshot data.
+Generates a csv file where each row contains a mismatch between the DB and raw snapshot data.
+{
+    "snapshot_id_from": "2021/07/05/12/50",
+    "snapshot_id_to": "2021/07/05/12/55"
+}
+
 ## siri-etl-update-pending-snapshots
 
-Check all raw snapshot files in both local and remote (S3) storage,
+Runs daily, checks all raw snapshot files in both local and remote (S3) storage,
 snapshots which don't exist in DB siri_snapshots table are added with status pending.
+
+## siri-etl-process-old-missing-snapshots
+
+Runs daily, iterates over siri_snapshots which have status pending and older then 24 hours,
+runs processing for those snapshots to update their data in DB.
 
 ## stride-etl-siri-add-ride-durations
 
