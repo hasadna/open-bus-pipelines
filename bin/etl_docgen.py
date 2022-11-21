@@ -23,9 +23,23 @@ def get_stride_db_desc_items():
     return res
 
 
+def get_source_url(url, filename=None):
+    if not url.startswith('https://raw.githubusercontent.com/'):
+        return None
+    if '/main/' not in url:
+        return None
+    url = url.replace('https://raw.githubusercontent.com/', 'https://www.github.com/')
+    if filename:
+        url = os.path.join(url, filename)
+    url = '/'.join(url.split('/')[0:-1])
+    url = url.replace('/main/', '/tree/main/')
+    return url
+
 def generate_markdown(filename):
     desc_items = get_stride_db_desc_items()
     markdown = '# Open Bus Stride ETL Processes\n\n'
+    markdown += 'This document is generated automatically from etl process definitions.\n'
+    markdown += 'Click on the process name to see the related source code.\n\n'
     dags = {}
     for url in [
         'https://raw.githubusercontent.com/hasadna/open-bus-siri-requester/main/open_bus_siri_requester/etl-docs.yaml',
@@ -34,7 +48,8 @@ def generate_markdown(filename):
         for dag in yaml_safe_load(url):
             assert dag['name'] not in dags
             dags[dag['name']] = {
-                'desc': dag['desc']
+                'desc': dag['desc'],
+                'source_url': get_source_url(url)
             }
             desc_items[dag['name']] = f'#{dag["name"]}'
     for etl in yaml_safe_load('./etl_index.yaml'):
@@ -46,11 +61,15 @@ def generate_markdown(filename):
                 if not docs.get('hide'):
                     assert dag['name'] not in dags
                     dags[dag['name']] = {
-                        'desc': docs.get('desc', dag.get('description'))
+                        'desc': docs.get('desc', dag.get('description')),
+                        'source_url': get_source_url(url_or_path, dag_filename)
                     }
                     desc_items[dag['name']] = f'#{dag["name"]}'
     for dag_name, dag in dags.items():
-        markdown += f'## {dag_name}\n\n'
+        if dag.get('source_url'):
+            markdown += f'## [{dag_name}]({dag["source_url"]})\n\n'
+        else:
+            markdown += f'## {dag_name}\n\n'
         markdown += f'{get_desc_markdown(desc_items, dag["desc"])}\n\n'
     with open(filename, 'w') as f:
         f.write(markdown)
