@@ -93,3 +93,7 @@ Runs daily, updates fake gtfs data for urbanaccess areas.
 Makes sure there is daily fake gtfs data for each area for the last 30 days.
 Data is avilable for download via the artifacts API method.
 
+## [stride-etl-packagers-siri-update-package](https://www.github.com/hasadna/open-bus-stride-etl/tree/main/open_bus_stride_etl/packagers)
+
+Collect SIRI data and save in storage
+
