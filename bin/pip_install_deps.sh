@@ -36,9 +36,9 @@ else
 fi
 if [ "${HAS_OLD_COMMIT}" == "no" ] || [ "${HAS_NEW_COMMIT}" == "no" ] || [ "${OLD_COMMIT}" != "${NEW_COMMIT}" ]; then
   echo Updating open-bus-pipelines dependencies to ${NEW_COMMIT}... &&\
-  "${STRIDE_VENV}/bin/pip" install -qqr https://raw.githubusercontent.com/hasadna/open-bus-pipelines/main/requirements-siri-etl.txt &&\
-  "${STRIDE_VENV}/bin/pip" install -qqr https://raw.githubusercontent.com/hasadna/open-bus-pipelines/main/requirements-stride-etl.txt &&\
-  "${STRIDE_VENV}/bin/pip" install -qqr https://raw.githubusercontent.com/hasadna/open-bus-pipelines/main/requirements-gtfs-etl.txt &&\
+  "${STRIDE_VENV}/bin/pip" install -qqr "https://raw.githubusercontent.com/hasadna/open-bus-pipelines/${NEW_COMMIT}/requirements-siri-etl.txt" &&\
+  "${STRIDE_VENV}/bin/pip" install -qqr "https://raw.githubusercontent.com/hasadna/open-bus-pipelines/${NEW_COMMIT}/requirements-stride-etl.txt" &&\
+  "${STRIDE_VENV}/bin/pip" install -qqr "https://raw.githubusercontent.com/hasadna/open-bus-pipelines/${NEW_COMMIT}/requirements-gtfs-etl.txt" &&\
   if [ "${HAS_NEW_COMMIT}" == "yes" ]; then
     echo "${NEW_COMMIT}" > "${OLD_COMMIT_FILENAME}"
   fi &&\
