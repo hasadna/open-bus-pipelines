@@ -128,6 +128,7 @@ services:
       - "airflow-home:/var/airflow"
     depends_on:
       - airflow-db
+      - redis
 
   airflow-scheduler:
     image: ghcr.io/hasadna/open-bus-pipelines/open-bus-pipelines:latest
@@ -148,6 +149,11 @@ services:
     depends_on:
       - airflow-webserver
       - stride-db
+
+  redis:
+    # Pulled Sep. 11, 2023
+    image: redis:6@sha256:43fa7d538f0dbe2151ff38d4b69b7dbea6f80223cfd85d10f7a9f8cb6447872e
+    restart: unless-stopped
 
 volumes:
   stride-db:

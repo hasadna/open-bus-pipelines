@@ -15,7 +15,7 @@ dag_kwargs = dict(
 if OPEN_BUS_PIPELINES_DOWNLOAD_SIRI_SNAPSHOTS:
     with DAG('siri-etl-download-latest-snapshots', **dag_kwargs) as download_latest_snapshots_dag:
         ApiBashOperator(
-            {
+            config={
                 'type': 'api',
                 'module': 'open_bus_siri_etl.local_development_helpers',
                 'function': 'download_latest_snapshots'
@@ -25,7 +25,7 @@ if OPEN_BUS_PIPELINES_DOWNLOAD_SIRI_SNAPSHOTS:
 else:
     with DAG('siri-etl-list-latest-snapshots', **dag_kwargs) as list_latest_snapshots_dag:
         ApiBashOperator(
-            {
+            config={
                 'type': 'cli',
                 'module': 'open_bus_siri_requester.cli',
                 'function': 'storage_list',

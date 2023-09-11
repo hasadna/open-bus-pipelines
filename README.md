@@ -323,6 +323,13 @@ export SQLALCHEMY_URL=postgresql://postgres:123456@localhost
 export DEBUG=yes
 ```
 
+Create directory for airflow data:
+
+```
+sudo mkdir /var/airflow
+sudo chown $USER /var/airflow
+```
+
 Initialize the Airflow DB and create an admin user:
 
 ```

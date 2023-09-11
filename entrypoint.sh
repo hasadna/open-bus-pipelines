@@ -2,7 +2,7 @@
 
 if [ "${OPEN_BUS_PIPELINES_AIRFLOW_INITIALIZE}" == "yes" ]; then
   if [ -f "${AIRFLOW_HOME}/airflow.cfg" ]; then
-    airflow db upgrade
+    airflow db migrate
   else
     airflow db init
   fi &&\

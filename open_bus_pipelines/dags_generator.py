@@ -17,7 +17,7 @@ def dags_generator(base_url):
     for dags_filename in yaml_safe_load(base_url + 'airflow.yaml').get('dag_files', []):
         for dag_config in yaml_safe_load(base_url + dags_filename):
             with DAG(
-                dag_config['name'],
+                dag_id=dag_config['name'],
                 description=dag_config.get('description', ''),
                 schedule_interval=dag_config.get('schedule_interval', None),
                 **dag_kwargs,
@@ -36,7 +36,7 @@ def dags_generator(base_url):
                         )
                     else:
                         tasks[task_config['id']] = ApiBashOperator(
-                            task_config['config'],
+                            config=task_config['config'],
                             task_id=task_config['id']
                         )
                     if task_config.get('depends_on'):

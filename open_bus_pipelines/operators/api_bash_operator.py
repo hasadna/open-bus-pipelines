@@ -9,7 +9,7 @@ from ..config import OPEN_BUS_PIPELINES_ROOTDIR
 class ApiBashOperator(CliBashOperator):
 
     def __init__(self, config, **kwargs):
-        super(ApiBashOperator, self).__init__(self._get_cli_bash_operator_cmd(config), **kwargs)
+        super(ApiBashOperator, self).__init__(cmd=self._get_cli_bash_operator_cmd(config), **kwargs)
 
     def _get_cli_bash_operator_cmd(self, config):
         return ' '.join([

@@ -1,1 +1,2 @@
 ruamel.yaml==0.17.10
+redis==5.0.0

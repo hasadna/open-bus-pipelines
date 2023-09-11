@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-AIRFLOW_VERSION=2.0.2
+AIRFLOW_VERSION=2.7.1
 PYTHON_VERSION="$(python --version | cut -d " " -f 2 | cut -d "." -f 1-2)"
 
 [ "${PYTHON_VERSION}" != "3.8" ] && echo invalid Python version, must use Python 3.8 && exit 1
