@@ -354,3 +354,24 @@ In a new terminal, start the Airflow scheduler:
 ```
 
 Access the airflow webserver at http://localhost:8080 login using admin / 12345678
+
+### Testing local development with parallel workers
+
+This process is a bit more complex but allows to test workflows which require airflow workers to run in parallel.
+
+Add the following to the end of `.airflow.env`:
+
+```
+export AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql://postgres:123456@localhost:5433
+export AIRFLOW__CORE__EXECUTOR=LocalExecutor
+export AIRFLOW__CORE__PARALLELISM=4
+export AIRFLOW__CORE__MAX_ACTIVE_TASKS_PER_DAG=3
+```
+
+Start the airflow db
+
+```
+docker compose up -d airflow-db
+```
+
+Start the airflow webserver / scheduler as described above, including the db initialization and admin user creation.
