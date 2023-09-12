@@ -5,6 +5,7 @@ from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 from open_bus_pipelines.operators.api_bash_operator import ApiBashOperator
 from open_bus_pipelines.yaml_loader import yaml_safe_load
 from open_bus_pipelines.sensors.dag_time_exceeded_sensor import DagTimeExceededSensor
+from open_bus_pipelines import config
 
 
 def dags_generator(base_url):
@@ -45,7 +46,8 @@ def dags_generator(base_url):
                             tasks[task_config['id']].set_upstream(tasks[depends_on_task_id])
                 if not dag_config.get('disable_alert_after_minutes'):
                     DagTimeExceededSensor(
-                        alert_after_minutes=dag_config.get('alert_after_minutes') or 360,
-                        task_id='monitor_task', mode='reschedule', poke_interval=60
+                        alert_after_minutes=dag_config.get('alert_after_minutes') or 1440,
+                        task_id='monitor_task', mode='reschedule', poke_interval=60,
+                        **({'email': config.OPEN_BUS_PIPELINES_ALERT_EMAILS} if config.OPEN_BUS_PIPELINES_ALERT_EMAILS else {})
                     )
                 yield dag_config['name'].replace('-', '_'), dag
