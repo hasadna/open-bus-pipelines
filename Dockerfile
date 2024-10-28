@@ -11,7 +11,7 @@ COPY bin/ bin/
 COPY requirements.txt ./
 RUN pip install --upgrade pip && bin/pip_install_airflow.sh
 RUN python3.8 -m venv /usr/local/lib/stride &&\
-    /usr/local/lib/stride/bin/pip install --upgrade pip
+    /usr/local/lib/stride/bin/pip install --upgrade 'pip<23'
 COPY webserver_config.py ./
 COPY dags/ dags/
 COPY open_bus_pipelines/ open_bus_pipelines/
