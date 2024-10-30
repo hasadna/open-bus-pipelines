@@ -20,7 +20,8 @@ class CliBashOperator(BashOperator):
 
     def __init__(self, cmd, **kwargs):
         assert not kwargs.get('bash_command')
-        kwargs['bash_command'] = '{print_dag_run}{pip_install_deps}{ENV}{STRIDE_VENV}/bin/{cmd}'.format(
+        super(CliBashOperator, self).__init__(**kwargs)
+        self.bash_command = '{print_dag_run}{pip_install_deps}{ENV}{STRIDE_VENV}/bin/{cmd}'.format(
             ENV=f'SQLALCHEMY_APPLICATION_NAME="{self.task_id}" SQLALCHEMY_APPLICATION_VERSION="$(cat {STRIDE_VENV}/open_bus_pipelines_commit.txt)" ',
             STRIDE_VENV=STRIDE_VENV,
             cmd=cmd,
@@ -28,5 +29,4 @@ class CliBashOperator(BashOperator):
             pip_install_deps=get_pip_install_deps()
         )
         if OPEN_BUS_PIPELINES_ALERT_EMAILS:
-            kwargs['email'] = OPEN_BUS_PIPELINES_ALERT_EMAILS
-        super(CliBashOperator, self).__init__(**kwargs)
+            self.email = OPEN_BUS_PIPELINES_ALERT_EMAILS
