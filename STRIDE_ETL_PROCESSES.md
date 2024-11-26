@@ -49,12 +49,6 @@ snapshots which don't exist in DB siri_snapshots table are added with status pen
 Runs daily, iterates over siri_snapshots which have status pending and older then 24 hours,
 runs processing for those snapshots to update their data in DB.
 
-## [stride-etl-siri-add-ride-durations](https://www.github.com/hasadna/open-bus-stride-etl/tree/main/open_bus_stride_etl/siri)
-
-Runs hourly, finds the first and last vehicle location of each ride and 
-updates the following fields in DB: [siri_ride.duration_minutes](https://github.com/hasadna/open-bus-stride-db/blob/main/DATA_MODEL.md#siri_rideduration_minutes),
-[siri_ride.first_vehicle_location_id](https://github.com/hasadna/open-bus-stride-db/blob/main/DATA_MODEL.md#siri_ridefirst_vehicle_location_id), [siri_ride.last_vehicle_location_id](https://github.com/hasadna/open-bus-stride-db/blob/main/DATA_MODEL.md#siri_ridelast_vehicle_location_id).
-
 ## [stride-etl-siri-update-ride-stops-gtfs](https://www.github.com/hasadna/open-bus-stride-etl/tree/main/open_bus_stride_etl/siri)
 
 Runs hourly, tries to match SIRI stops with GTFS stops and updates the following field in DB: [siri_ride_stop.gtfs_stop_id](https://github.com/hasadna/open-bus-stride-db/blob/main/DATA_MODEL.md#siri_ride_stopgtfs_stop_id).
