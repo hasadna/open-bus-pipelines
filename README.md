@@ -38,6 +38,11 @@ Central repository for open bus processing pipelines.
 
 This is the easiest option to run all the pipeline components for local development / testing
 
+**TIPS**
+
+1. if you use new docker version, you can use `docker compose` instead of `docker-compose` (without the hypen)
+2. some of the links in this documentation are broken (specifically, https://open-bus-siri-requester.hasadna.org.il/2021/), but processing the snapshots is still expected to work as expected.
+
 ### stride-db
 
 Pull the latest stride-db-init image (this container handles the migrations or restoring from backup):
@@ -56,7 +61,7 @@ There are two options for initializing the DB:
     * Pull images: `docker-compose pull siri-etl-process-new-snapshots stride-etl`
     * Choose a snapshot to download from https://open-bus-siri-requester.hasadna.org.il/2021/
     * Download and process the snapshot:
-      * `docker-compose run --entrypoint open-bus-siri-etl siri-etl-process-new-snapshots process-snapshot --download 2021/11/27/10/00`
+      * `docker-compose run --entrypoint open-bus-siri-etl siri-etl-process-new-snapshots process-snapshot --download 2024/11/27/10/00`
     * Run additional ETL processes, e.g.:
       * `docker-compose run stride-etl siri add-ride-durations`
 * Restore the DB from the last production backup (will take a while and require a lot of RAM..):
