@@ -1,0 +1,16 @@
+name: Agents
+on:
+  push:
+    branches:
+      - main
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+    - env:
+        IMAGE_NAME: "ghcr.io/hasadna/open-bus-pipelines/agents"
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        docker login ghcr.io -u hasadna --password-stdin <<< "${{ secrets.GITHUB_TOKEN }}" &&\
+        docker build -t "${IMAGE_NAME}:latest" -f AGENTS.codex.Dockerfile . &&\
+        docker push "${IMAGE_NAME}:latest"
