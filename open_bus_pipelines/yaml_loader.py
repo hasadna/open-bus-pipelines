@@ -17,17 +17,12 @@ def get_from_url(url):
     cache_filename = os.path.join(CACHE_PATH, cache_key + '.json')
     os.makedirs(CACHE_PATH, exist_ok=True)
     res = None
-    for i in range(10):
-        if i != 0:
-            print("Failed to get from url, will retry in 10 seconds...")
-            time.sleep(10)
-        try:
-            response = requests.get(url, timeout=60)
-            response.raise_for_status()
-            res = response.text
-            break
-        except:
-            traceback.print_exc()
+    try:
+        response = requests.get(url, timeout=15)
+        response.raise_for_status()
+        res = response.text
+    except:
+        traceback.print_exc()
     if res is not None:
         with open(cache_filename, 'w') as f:
             json.dump({
