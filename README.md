@@ -257,54 +257,50 @@ This allows you to run the Airflow server locally for development, it's not nece
 Prerequisites:
 
 * System dependencies: https://airflow.apache.org/docs/apache-airflow/stable/installation.html#system-dependencies
-* Python 3.8
-
-Create airflow virtualenv
-
-```
-python3.8 -m venv venv/airflow
-```
+* [uv](https://docs.astral.sh/uv/getting-started/installation/)
 
 Install airflow and dependencies
 
 ```
-. venv/airflow/bin/activate &&\
-pip install --upgrade pip &&\
-bin/pip_install_airflow.sh &&\
-pip install -e .
+uv sync
+uv pip install --upgrade pip &&\
+uv run bin/pip_install_airflow.sh &&\
+uv pip install -e . &&\
+uv pip install -r tests/requirements.txt
 ```
 
 Create stride virtualenv:
 
 ```
-python3.8 -m venv venv/stride
+uv venv .venv/stride
+uv pip install --upgrade pip --no-config --python .venv/stride/bin/python
 ```
 
 Follow the [open-bus-siri-etl README](https://github.com/hasadna/open-bus-siri-etl/blob/main/README.md) for local installation on this virtualenv.
 You can try the following one-liner if you already have all the required dependencies and repositories:
 
 ```
-( . venv/stride/bin/activate && pip install --upgrade pip && cd ../open-bus-siri-etl && pip install -r requirements-dev.txt )
+( . .venv/stride/bin/activate && pip install --upgrade pip && cd ../open-bus-siri-etl && pip install -r requirements-dev.txt )
 ```
 
 Install open-bus-stride-etl, assuming it's in a sibling directory you can use the following command:
 
 ```
-venv/stride/bin/pip install -r ../open-bus-stride-etl/requirements.txt &&\
-venv/stride/bin/pip install -e ../open-bus-stride-etl
+.venv/stride/bin/pip install -r ../open-bus-stride-etl/requirements.txt &&\
+.venv/stride/bin/pip install -e ../open-bus-stride-etl
 ```
 
 Install open-bus-gtfs-etl, assuming it's in a sibling directory you can use the following command:
 
 ```
-venv/stride/bin/pip install -r ../open-bus-gtfs-etl/requirements.txt &&\
-venv/stride/bin/pip install -e ../open-bus-gtfs-etl
+.venv/stride/bin/pip install -r ../open-bus-gtfs-etl/requirements.txt &&\
+.venv/stride/bin/pip install -e ../open-bus-gtfs-etl
 ```
 
 Create a file at `.airflow.env` with the following contents:
 
 ```
-. venv/airflow/bin/activate
+. .venv/airflow/bin/activate
 export AIRFLOW_HOME=$(pwd)/.airflow
 export AIRFLOW__CORE__DAGS_FOLDER=$(pwd)/dags
 export AIRFLOW__CORE__LOAD_EXAMPLES=False
