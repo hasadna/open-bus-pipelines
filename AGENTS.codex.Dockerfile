@@ -9,7 +9,72 @@ RUN apt update && apt install -y curl ca-certificates git &&\
       $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" > /etc/apt/sources.list.d/docker.list &&\
     apt update && apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 RUN useradd -m -s /bin/bash agent
-RUN apt update && apt install -y sudo
+RUN apt-get update &&\
+    apt-get install -y --no-install-recommends \
+            binutils \
+            sudo \
+            build-essential \
+            bzr \
+            curl \
+            default-libmysqlclient-dev \
+            dnsutils \
+            gettext \
+            git \
+            git-lfs \
+            gnupg2 \
+            inotify-tools \
+            iputils-ping \
+            jq \
+            libbz2-dev \
+            libc6 \
+            libc6-dev \
+            libcurl4-openssl-dev \
+            libdb-dev \
+            libedit2 \
+            libffi-dev \
+            libgcc-13-dev \
+            libgcc1 \
+            libgdbm-compat-dev \
+            libgdbm-dev \
+            libgdiplus \
+            libgssapi-krb5-2 \
+            liblzma-dev \
+            libncurses-dev \
+            libncursesw5-dev \
+            libnss3-dev \
+            libpq-dev \
+            libpsl-dev \
+            libpython3-dev \
+            libreadline-dev \
+            libsqlite3-dev \
+            libssl-dev \
+            libstdc++-13-dev \
+            libunwind8 \
+            libuuid1 \
+            libxml2-dev \
+            libz3-dev \
+            make \
+            moreutils \
+            netcat-openbsd \
+            openssh-client \
+            pkg-config \
+            protobuf-compiler \
+            python3-pip \
+            ripgrep \
+            rsync \
+            software-properties-common \
+            sqlite3 \
+            swig3.0 \
+            tk-dev \
+            tzdata \
+            unixodbc-dev \
+            unzip \
+            uuid-dev \
+            xz-utils \
+            zip \
+            zlib1g \
+            zlib1g-dev
+
 RUN echo 'agent ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/agent &&\
     chmod 440 /etc/sudoers.d/agent
 USER agent
