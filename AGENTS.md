@@ -1,7 +1,7 @@
 # AI Agents Instructions
 
 If file `.AGENTS.sh.completed` exists, it means that environment was already setup for you and all relevant dependencies are installed / downloaded.
-If it does not exist, setup the environment by running the script: `./AGENTS.sh`
+If it does not exist, setup the environment by running the script: `bash AGENTS.sh`
 
 Activate the virtual environment before running any commands:
 

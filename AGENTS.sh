@@ -39,7 +39,7 @@ apt update && apt install -y brotli
 )
 
 # Install other related projects
-for PROJ in open-bus-stride-etl open-bus-gtfs-etl; done
+for PROJ in open-bus-stride-etl open-bus-gtfs-etl; do
   (
     if [ -d "../${PROJ}" ]; then
       echo "Directory ../${PROJ} already exists"
