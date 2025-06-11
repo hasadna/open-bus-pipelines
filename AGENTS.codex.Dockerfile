@@ -18,14 +18,12 @@ RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 ARG NVM_VERSION=0.40.3
 ARG NODE_VERSION=22
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v${NVM_VERSION}/install.sh | bash
-RUN echo ' \
-    PATH="/home/agent/.local/bin:$PATH" \
-    . /home/agent/.local/bin/env \
-    export NVM_DIR=/home/agent/.nvm \
-    . /home/agent/.nvm/nvm.sh \
-    . /home/agent/.nvm/bash_completion \
-    ' > /home/agent/.bash_env &&\
-     echo ". /home/agent/.bash_env" >> /home/agent/.bashrc
+RUN echo 'export PATH="/home/agent/.local/bin:$PATH"' > .bash_env &&\
+    echo '. /home/agent/.local/bin/env' >> .bash_env &&\
+    echo 'export NVM_DIR=/home/agent/.nvm' >> .bash_env &&\
+    echo '. /home/agent/.nvm/nvm.sh' >> .bash_env &&\
+    echo '. /home/agent/.nvm/bash_completion' >> .bash_env &&\
+    echo ". /home/agent/.bash_env" >> /home/agent/.bashrc
 ENV BASH_ENV=/home/agent/.bash_env
 ARG PYTHON_VERSION=3.8
 RUN . $BASH_ENV && uv python install ${PYTHON_VERSION}
@@ -88,3 +86,5 @@ RUN echo ". .venv/bin/activate" > .airflow.env &&\
 USER root
 RUN rm /etc/sudoers.d/agent
 USER agent
+#RUN . $BASH_ENV && npm install -g @openai/codex
+#ENTRYPOINT ["codex"]
