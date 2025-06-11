@@ -68,11 +68,9 @@ export OPEN_BUS_SIRI_STORAGE_ROOTPATH=$(pwd)/.data/siri
 export SQLALCHEMY_URL=postgresql://postgres:123456@localhost
 export DEBUG=yes
 " > .airflow.env
-sudo mkdir /var/airflow
-sudo chown $USER /var/airflow
+mkdir /var/airflow
 . .airflow.env
 airflow db init
-airflow users create --username admin --firstname Admin --lastname Adminski \
-    --role Admin --password 12345678 --email admin@localhost
+airflow users create --username admin --firstname Admin --lastname Adminski --role Admin --password 12345678 --email admin@localhost
 
 touch .AGENTS.sh.completed
