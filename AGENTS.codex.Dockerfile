@@ -151,5 +151,5 @@ RUN echo ". .venv/bin/activate" > .airflow.env &&\
 USER root
 RUN rm /etc/sudoers.d/agent
 USER agent
-#RUN . $BASH_ENV && npm install -g @openai/codex
-#ENTRYPOINT ["codex"]
+RUN . $BASH_ENV && npm install -g @openai/codex
+ENTRYPOINT ["codex"]
