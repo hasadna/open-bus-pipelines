@@ -46,3 +46,8 @@ if [ "${HAS_OLD_COMMIT}" == "no" ] || [ "${HAS_NEW_COMMIT}" == "no" ] || [ "${OL
 else
   echo "Using existing open-bus-pipelines dependencies: ${OLD_COMMIT}"
 fi
+
+echo releasing lock
+exec 8>&-
+rm -f /var/lock/pip_install_deps
+echo lock released
