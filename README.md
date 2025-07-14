@@ -54,7 +54,7 @@ There are two options for initializing the DB:
   * You will now have an empty DB, to get some data you should run the following commands:
     * (refer to other sections of this doc for more info and options for each command)
     * Pull images: `docker-compose pull siri-etl-process-new-snapshots stride-etl`
-    * Choose a snapshot to download from https://open-bus-siri-requester.hasadna.org.il/2021/
+    * Choose a snapshot to download from https://open-bus-siri-requester.hasadna.org.il/2025/
     * Download and process the snapshot:
       * `docker-compose run --entrypoint open-bus-siri-etl siri-etl-process-new-snapshots process-snapshot --download 2021/11/27/10/00`
     * Run additional ETL processes, e.g.:
