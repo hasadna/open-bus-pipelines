@@ -225,8 +225,8 @@ Additional functionality:
 * Check the logs: `docker-compose logs stride-api`
 * Develop stride-api from a local clone:
     * Clone [hasadna/open-bus-stride-api](https://github.com/hasadna/open-bus-stride-api) to ../open-bus-stride-api (relative to open-bus-pipelines repository) 
-    * Run the stride-api server: `docker-compose -f docker-compose.yaml -f docker-compose-dev.yaml up -d stride-api`
     * Build the Docker image: `docker-compose -f docker-compose.yaml -f docker-compose-dev.yaml build stride-api`
+    * Run the stride-api server: `docker-compose -f docker-compose.yaml -f docker-compose-dev.yaml up -d stride-api`
 
 ### airflow
 
