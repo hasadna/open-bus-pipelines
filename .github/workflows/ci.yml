@@ -7,6 +7,9 @@ jobs:
   ci:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/setup-python@v6
+      with:
+        python-version: '3.10'
     - env:
         DOCKER_APP_IMAGE_NAME: "ghcr.io/hasadna/open-bus-pipelines/open-bus-pipelines"
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
