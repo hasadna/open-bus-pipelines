@@ -7,17 +7,13 @@ jobs:
   ci:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/setup-python@v6
-      with:
-        python-version: '3.10'
-        pip-version: '24'
     - env:
         DOCKER_APP_IMAGE_NAME: "ghcr.io/hasadna/open-bus-pipelines/open-bus-pipelines"
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         HASADNA_K8S_DEPLOY_KEY: ${{ secrets.HASADNA_K8S_DEPLOY_KEY }}
       run: |
-        curl -s https://raw.githubusercontent.com/OriHoch/uumpa-ci-toolbox/65a0704332e63d51f63981dbb25cd83682dc4078/bin/github_actions_install.sh \
-          | bash -s 65a0704332e63d51f63981dbb25cd83682dc4078 OriHoch/uumpa-ci-toolbox &&\
+        curl -s https://raw.githubusercontent.com/OriHoch/uumpa-ci-toolbox/907c445d80f356d4df741dc7cc4e642e029ee815/bin/github_actions_install.sh \
+          | bash -s 907c445d80f356d4df741dc7cc4e642e029ee815 OriHoch/uumpa-ci-toolbox &&\
         uci github actions self-checkout --config-user-name "open-bus-pipelines-ci" &&\
         uci github actions docker-login &&\
         uci docker build-cache \
