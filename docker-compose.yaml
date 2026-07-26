@@ -1,8 +1,19 @@
 version: '2.4'
 
+# All ghcr.io/hasadna/* images are only published for linux/amd64. Pinning it
+# here (rather than relying on each user setting DOCKER_DEFAULT_PLATFORM)
+# makes pull/run work out of the box on arm64 hosts (e.g. Apple Silicon, via
+# Docker Desktop's bundled Rosetta/QEMU emulation) without forcing emulation
+# on the images below that are genuinely multi-arch (postgres, redis).
+# Native Linux arm64 hosts need QEMU binfmt registered once, e.g.:
+#   docker run --privileged --rm tonistiigi/binfmt --install all
+x-amd64-only: &amd64-only
+  platform: linux/amd64
+
 services:
 
   stride-db-init:
+    <<: *amd64-only
     image: ghcr.io/hasadna/open-bus-stride-db/open-bus-stride-db:latest
     restart: "on-failure"
     environment:
@@ -28,6 +39,7 @@ services:
       - "stride-db:/var/lib/postgresql/data"
 
   stride-etl:
+    <<: *amd64-only
     image: ghcr.io/hasadna/open-bus-stride-etl/open-bus-stride-etl:latest
     restart: "no"
     environment:
@@ -36,6 +48,7 @@ services:
       - stride-db
 
   gtfs-etl:
+    <<: *amd64-only
     image: ghcr.io/hasadna/open-bus-gtfs-etl/open-bus-gtfs-etl:latest
     restart: "no"
     environment:
@@ -47,6 +60,7 @@ services:
       - "gtfs-storage:/var/gtfs-storage"
 
   siri-requester:
+    <<: *amd64-only
     image: ghcr.io/hasadna/open-bus-siri-requester/open-bus-siri-requester:latest
     restart: unless-stopped
     environment:
@@ -63,6 +77,7 @@ services:
       - ".data/siri-requester-key:/var/siri-requester-key"
 
   siri-requester-health:
+    <<: *amd64-only
     image: ghcr.io/hasadna/open-bus-siri-requester/open-bus-siri-requester:latest
     restart: unless-stopped
     entrypoint: [open-bus-siri-requester, health-daemon-start]
@@ -72,6 +87,7 @@ services:
       - "siri-storage:/var/siri-storage"
 
   siri-requester-nginx:
+    <<: *amd64-only
     image: ghcr.io/hasadna/open-bus-siri-requester/open-bus-siri-requester-nginx:latest
     restart: unless-stopped
     ports:
@@ -84,6 +100,7 @@ services:
       - siri-requester-health
 
   siri-etl-process-new-snapshots:
+    <<: *amd64-only
     image: ghcr.io/hasadna/open-bus-siri-etl/open-bus-siri-etl:latest
     restart: unless-stopped
     command: [start-process-new-snapshots-daemon]
@@ -97,6 +114,7 @@ services:
       - stride-db
 
   stride-api:
+    <<: *amd64-only
     image: ghcr.io/hasadna/open-bus-stride-api/open-bus-stride-api:latest
     restart: unless-stopped
     ports:
@@ -117,6 +135,7 @@ services:
       - "5433:5432"
 
   airflow-webserver:
+    <<: *amd64-only
     image: ghcr.io/hasadna/open-bus-pipelines/open-bus-pipelines:latest
     restart: unless-stopped
     build: .
@@ -133,6 +152,7 @@ services:
       - redis
 
   airflow-scheduler:
+    <<: *amd64-only
     image: ghcr.io/hasadna/open-bus-pipelines/open-bus-pipelines:latest
     restart: unless-stopped
     build: .
