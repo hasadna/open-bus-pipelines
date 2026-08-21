@@ -18,10 +18,14 @@ def dags_generator(base_url):
     )
     for dags_filename in yaml_safe_load(base_url + 'airflow.yaml').get('dag_files', []):
         for dag_config in yaml_safe_load(base_url + dags_filename):
+            max_active_runs = dag_config.get(
+                'max_active_runs', 1 if dag_config.get('schedule_interval') else None
+            )
             with DAG(
                 dag_id=dag_config['name'],
                 description=dag_config.get('description', ''),
                 schedule_interval=dag_config.get('schedule_interval', None),
+                **({} if max_active_runs is None else {'max_active_runs': max_active_runs}),
                 **dag_kwargs,
             ) as dag:
                 tasks = {}
